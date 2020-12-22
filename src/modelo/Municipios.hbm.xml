@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 22 dic. 2020 18:00:36 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Municipios" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="municipios">
+        <id name="codMuni" type="java.lang.Integer">
+            <column name="CodMuni"/>
+            <generator class="identity"/>
+        </id>
+        <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="Nombre"/>
+        </property>
+        <property generated="never" lazy="false" name="descripcion" optimistic-lock="true" type="string" unique="false">
+            <column length="65535" name="Descripcion"/>
+        </property>
+        <property generated="never" lazy="false" name="codProv" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="CodProv"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="estacioneses" optimistic-lock="true" sort="unsorted" table="estaciones">
+            <key on-delete="noaction">
+                <column name="CodMuni"/>
+            </key>
+            <one-to-many class="modelo.Estaciones" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>
