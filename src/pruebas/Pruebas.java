@@ -11,14 +11,14 @@ public class Pruebas {
 
 
 
-	@Test	
-	public void testInsercion() {
-		
-		baseDatos bd = new baseDatos();
-		
-		boolean b = bd.insert();
-		assertEquals(true,b );
-		
-	}
+//	@Test	
+//	public void testInsercion() {
+//		
+//		baseDatos bd = new baseDatos();
+//		
+//		boolean b = bd.insert();
+//		assertEquals(true,b );
+//		
+//	}
 	
 }
