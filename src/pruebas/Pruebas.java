@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.jupiter.api.Test;
 
-import dao.baseDatos;
+import dao.BaseDatos;
 
  
 public class Pruebas {
@@ -13,11 +13,23 @@ public class Pruebas {
 
 
 	/*@Test	
-	public void testInsercion() {
+	public void testInsercionDatos() {
+		
+		BaseDatos bd = new BaseDatos();
+		Datos datos = new Datos();
+		
+		long millis = System.currentTimeMillis();
+		
+		Date fecha = new Date(millis);		
+		Time hora = new Time(millis);		
+		
+		Provincias provincia = new Provincias(0, "Gipuzkoa");		
+		
+		
 		
 		baseDatos bd = new baseDatos();
 		
-		boolean b = bd.insert();
+		boolean b = bd.insertDatos(datos);
 		assertEquals(true,b );
 		
 	}*/
