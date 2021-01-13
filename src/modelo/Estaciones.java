@@ -1,5 +1,5 @@
 package modelo;
-// Generated 11 ene. 2021 16:15:54 by Hibernate Tools 5.4.21.Final
+// Generated 13 ene. 2021 20:28:42 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,36 +9,39 @@ import java.util.Set;
  */
 public class Estaciones implements java.io.Serializable {
 
-	private int codEstacion;
+	private int codEst;
 	private Municipios municipios;
-	private double coordenadaX;
-	private double coordenadaY;
+	private String nombre;
+	private String direccion;
+	private Double latitud;
+	private Double longitud;
 	private Set datoses = new HashSet(0);
 
 	public Estaciones() {
 	}
 
-	public Estaciones(int codEstacion, Municipios municipios, double coordenadaX, double coordenadaY) {
-		this.codEstacion = codEstacion;
+	public Estaciones(int codEst, Municipios municipios) {
+		this.codEst = codEst;
 		this.municipios = municipios;
-		this.coordenadaX = coordenadaX;
-		this.coordenadaY = coordenadaY;
 	}
 
-	public Estaciones(int codEstacion, Municipios municipios, double coordenadaX, double coordenadaY, Set datoses) {
-		this.codEstacion = codEstacion;
+	public Estaciones(int codEst, Municipios municipios, String nombre, String direccion, Double latitud,
+			Double longitud, Set datoses) {
+		this.codEst = codEst;
 		this.municipios = municipios;
-		this.coordenadaX = coordenadaX;
-		this.coordenadaY = coordenadaY;
+		this.nombre = nombre;
+		this.direccion = direccion;
+		this.latitud = latitud;
+		this.longitud = longitud;
 		this.datoses = datoses;
 	}
 
-	public int getCodEstacion() {
-		return this.codEstacion;
+	public int getCodEst() {
+		return this.codEst;
 	}
 
-	public void setCodEstacion(int codEstacion) {
-		this.codEstacion = codEstacion;
+	public void setCodEst(int codEst) {
+		this.codEst = codEst;
 	}
 
 	public Municipios getMunicipios() {
@@ -49,20 +52,36 @@ public class Estaciones implements java.io.Serializable {
 		this.municipios = municipios;
 	}
 
-	public double getCoordenadaX() {
-		return this.coordenadaX;
+	public String getNombre() {
+		return this.nombre;
 	}
 
-	public void setCoordenadaX(double coordenadaX) {
-		this.coordenadaX = coordenadaX;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public double getCoordenadaY() {
-		return this.coordenadaY;
+	public String getDireccion() {
+		return this.direccion;
 	}
 
-	public void setCoordenadaY(double coordenadaY) {
-		this.coordenadaY = coordenadaY;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public Double getLatitud() {
+		return this.latitud;
+	}
+
+	public void setLatitud(Double latitud) {
+		this.latitud = latitud;
+	}
+
+	public Double getLongitud() {
+		return this.longitud;
+	}
+
+	public void setLongitud(Double longitud) {
+		this.longitud = longitud;
 	}
 
 	public Set getDatoses() {

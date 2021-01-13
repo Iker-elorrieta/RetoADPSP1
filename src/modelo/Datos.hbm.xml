@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 11 ene. 2021 16:15:54 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13 ene. 2021 20:28:42 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Datos" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="datos">
         <composite-id class="modelo.DatosId" mapped="false" name="id" unsaved-value="undefined">
-            <key-property name="codEstacion" type="int">
-                <column name="CodEstacion"/>
-            </key-property>
             <key-property name="fecha" type="date">
                 <column length="10" name="Fecha"/>
             </key-property>
-            <key-property name="hora" type="time">
-                <column length="8" name="Hora"/>
+            <key-property name="hora" type="string">
+                <column length="50" name="Hora"/>
+            </key-property>
+            <key-property name="codEst" type="int">
+                <column name="CodEst"/>
             </key-property>
         </composite-id>
         <many-to-one class="modelo.Estaciones" embed-xml="true" fetch="select" insert="false" name="estaciones" not-found="exception" optimistic-lock="true" unique="false" update="false">
-            <column name="CodEstacion" not-null="true"/>
+            <column name="CodEst" not-null="true"/>
         </many-to-one>
-        <property generated="never" lazy="false" name="precipitaciones" optimistic-lock="true" type="string" unique="false">
-            <column length="50" name="Precipitaciones" not-null="true"/>
+        <property generated="never" lazy="false" name="nogm3" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="NOgm3"/>
         </property>
-        <property generated="never" lazy="false" name="temperatura" optimistic-lock="true" type="int" unique="false">
-            <column name="Temperatura" not-null="true"/>
+        <property generated="never" lazy="false" name="no2gm3" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="NO2gm3"/>
         </property>
-        <property generated="never" lazy="false" name="velocidadViento" optimistic-lock="true" type="int" unique="false">
-            <column name="`Velocidad viento`" not-null="true"/>
+        <property generated="never" lazy="false" name="noxgm3" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="NOXgm3"/>
+        </property>
+        <property generated="never" lazy="false" name="pm10gm3" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="PM10gm3"/>
+        </property>
+        <property generated="never" lazy="false" name="direccionViento" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="`direccion viento`"/>
+        </property>
+        <property generated="never" lazy="false" name="h" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="H"/>
+        </property>
+        <property generated="never" lazy="false" name="precipitaciones" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="Precipitaciones"/>
+        </property>
+        <property generated="never" lazy="false" name="temperatura" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="Temperatura"/>
+        </property>
+        <property generated="never" lazy="false" name="velocidadViento" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="`Velocidad Viento`"/>
         </property>
     </class>
 </hibernate-mapping>

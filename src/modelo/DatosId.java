@@ -1,5 +1,5 @@
 package modelo;
-// Generated 11 ene. 2021 16:15:54 by Hibernate Tools 5.4.21.Final
+// Generated 13 ene. 2021 20:28:42 by Hibernate Tools 5.4.21.Final
 
 import java.util.Date;
 
@@ -8,25 +8,17 @@ import java.util.Date;
  */
 public class DatosId implements java.io.Serializable {
 
-	private int codEstacion;
 	private Date fecha;
-	private Date hora;
+	private String hora;
+	private int codEst;
 
 	public DatosId() {
 	}
 
-	public DatosId(int codEstacion, Date fecha, Date hora) {
-		this.codEstacion = codEstacion;
+	public DatosId(Date fecha, String hora, int codEst) {
 		this.fecha = fecha;
 		this.hora = hora;
-	}
-
-	public int getCodEstacion() {
-		return this.codEstacion;
-	}
-
-	public void setCodEstacion(int codEstacion) {
-		this.codEstacion = codEstacion;
+		this.codEst = codEst;
 	}
 
 	public Date getFecha() {
@@ -37,12 +29,20 @@ public class DatosId implements java.io.Serializable {
 		this.fecha = fecha;
 	}
 
-	public Date getHora() {
+	public String getHora() {
 		return this.hora;
 	}
 
-	public void setHora(Date hora) {
+	public void setHora(String hora) {
 		this.hora = hora;
+	}
+
+	public int getCodEst() {
+		return this.codEst;
+	}
+
+	public void setCodEst(int codEst) {
+		this.codEst = codEst;
 	}
 
 	public boolean equals(Object other) {
@@ -54,19 +54,19 @@ public class DatosId implements java.io.Serializable {
 			return false;
 		DatosId castOther = (DatosId) other;
 
-		return (this.getCodEstacion() == castOther.getCodEstacion())
-				&& ((this.getFecha() == castOther.getFecha()) || (this.getFecha() != null
-						&& castOther.getFecha() != null && this.getFecha().equals(castOther.getFecha())))
+		return ((this.getFecha() == castOther.getFecha()) || (this.getFecha() != null && castOther.getFecha() != null
+				&& this.getFecha().equals(castOther.getFecha())))
 				&& ((this.getHora() == castOther.getHora()) || (this.getHora() != null && castOther.getHora() != null
-						&& this.getHora().equals(castOther.getHora())));
+						&& this.getHora().equals(castOther.getHora())))
+				&& (this.getCodEst() == castOther.getCodEst());
 	}
 
 	public int hashCode() {
 		int result = 17;
 
-		result = 37 * result + this.getCodEstacion();
 		result = 37 * result + (getFecha() == null ? 0 : this.getFecha().hashCode());
 		result = 37 * result + (getHora() == null ? 0 : this.getHora().hashCode());
+		result = 37 * result + this.getCodEst();
 		return result;
 	}
 

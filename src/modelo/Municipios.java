@@ -1,5 +1,5 @@
 package modelo;
-// Generated 11 ene. 2021 16:15:54 by Hibernate Tools 5.4.21.Final
+// Generated 13 ene. 2021 20:28:42 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,49 +9,46 @@ import java.util.Set;
  */
 public class Municipios implements java.io.Serializable {
 
-	private int codMunicipio;
-	private Provincia provincia;
+	private int codMuni;
+	private Provincias provincias;
 	private String nombre;
 	private String descripcion;
+	private Set ubicacioneses = new HashSet(0);
 	private Set estacioneses = new HashSet(0);
-	private Set espaciosNaturaleses = new HashSet(0);
-	private Set usuarioses = new HashSet(0);
 
 	public Municipios() {
 	}
 
-	public Municipios(int codMunicipio, Provincia provincia, String nombre, String descripcion) {
-		this.codMunicipio = codMunicipio;
-		this.provincia = provincia;
+	public Municipios(int codMuni, Provincias provincias, String nombre) {
+		this.codMuni = codMuni;
+		this.provincias = provincias;
 		this.nombre = nombre;
-		this.descripcion = descripcion;
 	}
 
-	public Municipios(int codMunicipio, Provincia provincia, String nombre, String descripcion, Set estacioneses,
-			Set espaciosNaturaleses, Set usuarioses) {
-		this.codMunicipio = codMunicipio;
-		this.provincia = provincia;
+	public Municipios(int codMuni, Provincias provincias, String nombre, String descripcion, Set ubicacioneses,
+			Set estacioneses) {
+		this.codMuni = codMuni;
+		this.provincias = provincias;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.ubicacioneses = ubicacioneses;
 		this.estacioneses = estacioneses;
-		this.espaciosNaturaleses = espaciosNaturaleses;
-		this.usuarioses = usuarioses;
 	}
 
-	public int getCodMunicipio() {
-		return this.codMunicipio;
+	public int getCodMuni() {
+		return this.codMuni;
 	}
 
-	public void setCodMunicipio(int codMunicipio) {
-		this.codMunicipio = codMunicipio;
+	public void setCodMuni(int codMuni) {
+		this.codMuni = codMuni;
 	}
 
-	public Provincia getProvincia() {
-		return this.provincia;
+	public Provincias getProvincias() {
+		return this.provincias;
 	}
 
-	public void setProvincia(Provincia provincia) {
-		this.provincia = provincia;
+	public void setProvincias(Provincias provincias) {
+		this.provincias = provincias;
 	}
 
 	public String getNombre() {
@@ -70,28 +67,20 @@ public class Municipios implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public Set getUbicacioneses() {
+		return this.ubicacioneses;
+	}
+
+	public void setUbicacioneses(Set ubicacioneses) {
+		this.ubicacioneses = ubicacioneses;
+	}
+
 	public Set getEstacioneses() {
 		return this.estacioneses;
 	}
 
 	public void setEstacioneses(Set estacioneses) {
 		this.estacioneses = estacioneses;
-	}
-
-	public Set getEspaciosNaturaleses() {
-		return this.espaciosNaturaleses;
-	}
-
-	public void setEspaciosNaturaleses(Set espaciosNaturaleses) {
-		this.espaciosNaturaleses = espaciosNaturaleses;
-	}
-
-	public Set getUsuarioses() {
-		return this.usuarioses;
-	}
-
-	public void setUsuarioses(Set usuarioses) {
-		this.usuarioses = usuarioses;
 	}
 
 }
