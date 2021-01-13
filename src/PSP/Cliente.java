@@ -10,24 +10,25 @@ public class Cliente {
 	private final int PUERTO = 5000;
 	private final String IP = "127.0.0.1";
 
-	public void iniciar() {
+	public boolean iniciar() {
 		Socket cliente = null;
 		ObjectInputStream entrada = null;
 		ObjectOutputStream salida = null;
 		try {
+			PantallaCliente p = new PantallaCliente();
+			p.setVisible(true);
+
 			cliente = new Socket(IP, PUERTO);
 			System.out.println("Conexión realizada con servidor");
 			entrada = new ObjectInputStream(cliente.getInputStream());
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 			
 			String resultado = entrada.readObject().toString();
-			
-			System.out.println(resultado);
+			p.getMostrarMunicipio().setText(p.getMostrarMunicipio().getText()+resultado);
 			
 		} catch (IOException e) {
 			System.out.println("Error: " + e.getMessage());
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
 		} finally {
 			try {
 				if (cliente != null)
@@ -41,6 +42,7 @@ public class Cliente {
 			}
 			System.out.println("Fin cliente");
 		}
+		return true;
 	}
 
 	public static void main(String[] args) {

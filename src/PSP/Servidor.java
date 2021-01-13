@@ -19,26 +19,29 @@ public class Servidor {
     private static final String USUARIO = "root";
     private static final String CLAVE = "";
     private Connection conexion = null;
-    public Connection conectar() {
-        
-        try {
-            Class.forName(CONTROLADOR);
-            conexion = DriverManager.getConnection(URL, USUARIO, CLAVE);
-            System.out.println("Conexión OK");
 
+	public boolean conectar(String c, String u) {
+        boolean res;
+        try {
+            Class.forName(c);
+            conexion = DriverManager.getConnection(u, USUARIO, CLAVE);
+            System.out.println("Conexión OK");
+            res=true;
         } catch (ClassNotFoundException e) {
             System.out.println("Error al cargar el controlador");
             e.printStackTrace();
-
+            res=false;
         } catch (SQLException e) {
             System.out.println("Error en la conexión");
             e.printStackTrace();
+            res=false;
         }
         
-        return conexion;
+        return res;
     }
 	
-	public void iniciar() {
+	public boolean iniciar() {
+		boolean res;
 		ServerSocket servidor = null;
 		Socket cliente = null;
 		ObjectInputStream entrada = null;
@@ -51,7 +54,7 @@ public class Servidor {
 			salida = new ObjectOutputStream(cliente.getOutputStream());
 			entrada = new ObjectInputStream(cliente.getInputStream());
 			
-			conectar();
+			conectar(CONTROLADOR,URL);
 			
 			Statement s = conexion.createStatement();
 			ResultSet rs = s.executeQuery ("select Nombre from municipios where CodMunicipio=1");
@@ -61,9 +64,11 @@ public class Servidor {
 			}
 			
 		} catch (IOException e) {
+			res=false;
 			System.out.println("Error: " + e.getMessage());
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
+			res=false;
 		} finally {
 			try {
 				if (servidor != null)
@@ -79,6 +84,8 @@ public class Servidor {
 			}
 			System.out.println("Fin servidor");
 		}
+		res=true;
+		return res;
 	}
 
 	public static void main(String[] args) {
