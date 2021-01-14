@@ -124,8 +124,7 @@ public class Pruebas {
 	
 	@Test
 	public void testServidorOK() {
-		String[] args = null;
-		PSP.Servidor.main(args);
+		
 		PSP.Servidor s = new PSP.Servidor();
 		
 		boolean  boo = s.iniciar();

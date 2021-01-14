@@ -15,7 +15,7 @@ public class Servidor {
 	
 	private final int PUERTO = 5000;
 	private static final String CONTROLADOR = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/euskalmet";
+    private static final String URL = "jdbc:mysql://localhost:3306/retofinal";
     private static final String USUARIO = "root";
     private static final String CLAVE = "";
     private Connection conexion = null;
@@ -55,7 +55,7 @@ public class Servidor {
 			conectar(CONTROLADOR,URL);
 			
 			Statement s = conexion.createStatement();
-			ResultSet rs = s.executeQuery ("select Nombre from municipios where CodMunicipio=1");
+			ResultSet rs = s.executeQuery ("select Nombre from municipios where CodMuni=0");
 			
 			if (rs.next()){
 			    salida.writeObject(rs.getString(1));
