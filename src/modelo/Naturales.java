@@ -14,8 +14,7 @@ public class Naturales implements java.io.Serializable {
 	private String descripcion;
 	private Set ubicacioneses = new HashSet(0);
 
-	public Naturales() {
-	}
+	
 
 	public Naturales(int codEspacio, String nombre) {
 		this.codEspacio = codEspacio;

@@ -12,8 +12,7 @@ public class DatosId implements java.io.Serializable {
 	private String hora;
 	private int codEst;
 
-	public DatosId() {
-	}
+	
 
 	public DatosId(Date fecha, String hora, int codEst) {
 		this.fecha = fecha;

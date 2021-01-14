@@ -10,10 +10,12 @@ import org.hibernate.cfg.Configuration;
 
 import modelo.Datos;
 import modelo.Estaciones;
+import modelo.Hashes;
 import modelo.Municipios;
 import modelo.Naturales;
 import modelo.Provincias;
 import modelo.Ubicaciones;
+import modelo.Usuarios;
 
 
 
@@ -41,7 +43,7 @@ public class BaseDatos {
 		}
 	}
 		public boolean insertEstaciones(Estaciones estacion) {			
-
+			System.out.println("d");
 			try {
 
 				SessionFactory sesion = HibernateUtil.getSessionFactory();
@@ -99,8 +101,10 @@ public class BaseDatos {
 				// TODO: handle exception
 				return false;
 			}
+			
 		
 	}
+		
 		public boolean insertProvincias(Provincias provincia) {			
 
 			try {
@@ -142,6 +146,43 @@ public class BaseDatos {
 			}
 		
 	}
+		public boolean insertUsuarios(Usuarios usuario) {			
+
+			try {
+
+				SessionFactory sesion = HibernateUtil.getSessionFactory();
+				Session session = sesion.openSession();
+				Transaction tx = session.beginTransaction();
+			
+				session.save(usuario);			
+				
+				tx.commit();		
+				session.close();
+
+				return true;
+			} catch (Exception e) {
+				// TODO: handle exception
+				return false;
+			}
+		}
+		public boolean insertHash(Hashes hash) {
+			try {
+
+				SessionFactory sesion = HibernateUtil.getSessionFactory();
+				Session session = sesion.openSession();
+				Transaction tx = session.beginTransaction();
+			
+				session.save(hash);			
+				
+				tx.commit();		
+				session.close();
+
+				return true;
+			} catch (Exception e) {
+				// TODO: handle exception
+				return false;
+			}
+		}
 	
 
 	public static class HibernateUtil {
@@ -163,5 +204,8 @@ public class BaseDatos {
 			return sessionFactory;
 		}
 	}
+
+
+	
 
 }

@@ -13,8 +13,7 @@ public class Provincias implements java.io.Serializable {
 	private String nombre;
 	private Set municipioses = new HashSet(0);
 
-	public Provincias() {
-	}
+	
 
 	public Provincias(int codProv, String nombre) {
 		this.codProv = codProv;

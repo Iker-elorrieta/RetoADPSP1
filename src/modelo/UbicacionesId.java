@@ -9,8 +9,7 @@ public class UbicacionesId implements java.io.Serializable {
 	private int codEspacio;
 	private int codMuni;
 
-	public UbicacionesId() {
-	}
+	
 
 	public UbicacionesId(int codEspacio, int codMuni) {
 		this.codEspacio = codEspacio;

@@ -10,8 +10,7 @@ public class Usuarios implements java.io.Serializable {
 	private String nombre;
 	private String password;
 
-	public Usuarios() {
-	}
+	
 
 	public Usuarios(int codUsu, String nombre, String password) {
 		this.codUsu = codUsu;

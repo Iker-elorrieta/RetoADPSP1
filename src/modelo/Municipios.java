@@ -16,8 +16,7 @@ public class Municipios implements java.io.Serializable {
 	private Set ubicacioneses = new HashSet(0);
 	private Set estacioneses = new HashSet(0);
 
-	public Municipios() {
-	}
+	
 
 	public Municipios(int codMuni, Provincias provincias, String nombre) {
 		this.codMuni = codMuni;
@@ -25,15 +24,7 @@ public class Municipios implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Municipios(int codMuni, Provincias provincias, String nombre, String descripcion, Set ubicacioneses,
-			Set estacioneses) {
-		this.codMuni = codMuni;
-		this.provincias = provincias;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.ubicacioneses = ubicacioneses;
-		this.estacioneses = estacioneses;
-	}
+	
 
 	public int getCodMuni() {
 		return this.codMuni;

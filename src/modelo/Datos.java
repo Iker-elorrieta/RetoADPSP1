@@ -18,13 +18,9 @@ public class Datos implements java.io.Serializable {
 	private Integer temperatura;
 	private Integer velocidadViento;
 
-	public Datos() {
-	}
+	
 
-	public Datos(DatosId id, Estaciones estaciones) {
-		this.id = id;
-		this.estaciones = estaciones;
-	}
+	
 
 	public Datos(DatosId id, Estaciones estaciones, Integer nogm3, Integer no2gm3, Integer noxgm3, Integer pm10gm3,
 			String direccionViento, Integer h, Integer precipitaciones, Integer temperatura, Integer velocidadViento) {

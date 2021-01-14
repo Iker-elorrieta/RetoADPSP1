@@ -11,9 +11,7 @@ public class Hashes implements java.io.Serializable {
 	private String hash;
 	private String nombreJson;
 
-	public Hashes() {
-	}
-
+	
 	public Hashes(int codHash, String url, String hash, String nombreJson) {
 		this.codHash = codHash;
 		this.url = url;

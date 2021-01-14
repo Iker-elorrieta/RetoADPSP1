@@ -10,8 +10,7 @@ public class Ubicaciones implements java.io.Serializable {
 	private Municipios municipios;
 	private Naturales naturales;
 
-	public Ubicaciones() {
-	}
+	
 
 	public Ubicaciones(UbicacionesId id, Municipios municipios, Naturales naturales) {
 		this.id = id;
