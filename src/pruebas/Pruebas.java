@@ -1,12 +1,11 @@
 package pruebas;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.sql.Date;
 import java.sql.Time;
-
+import static org.junit.Assert.assertFalse;
 import org.junit.jupiter.api.Test;
-
 import dao.BaseDatos;
 import modelo.Datos;
 import modelo.DatosId;
@@ -21,6 +20,7 @@ import modelo.Usuarios;
 
 public class Pruebas {
 
+	
 	@Test
 	public void testInsercionHash() {
 
@@ -121,5 +121,52 @@ public class Pruebas {
 		assertEquals(true, b);
 
 	}
+	
+	@Test
+	public void testServidorOK() {
+		String[] args = null;
+		PSP.Servidor.main(args);
+		PSP.Servidor s = new PSP.Servidor();
+		
+		boolean  boo = s.iniciar();
+		
+		PSP.Cliente c = new PSP.Cliente();
+		c.iniciar();
+		
+		assertTrue(boo);
+		
+	}
+	
+	@Test
+	public void testCliente() {
+		String[] args = null;
+		/*PSP.Servidor s3 = new PSP.Servidor();
+		s3.iniciar();*/
+		PSP.Cliente.main(args);
+		PSP.Cliente c3 = new PSP.Cliente();
+		
+		boolean boo = c3.iniciar();
+		
+		assertTrue(boo);
+	}
+	
+	@Test
+	public void testServidorMAL1() {
+		PSP.Servidor s1 = new PSP.Servidor();
 
+		boolean boo = s1.conectar("33","jdbc:mysql://localhost:3306/euskalmet");
+		
+		assertFalse(boo);
+		
+	}
+
+	@Test
+	public void testServidorMAL2() {
+		PSP.Servidor s2 = new PSP.Servidor();
+
+		boolean boo = s2.conectar("com.mysql.jdbc.Driver","33");
+		
+		assertFalse(boo);
+		
+	}
 }

@@ -26,6 +26,12 @@ public class Municipios implements java.io.Serializable {
 
 	
 
+	public Municipios() {
+		
+	}
+
+
+
 	public int getCodMuni() {
 		return this.codMuni;
 	}
