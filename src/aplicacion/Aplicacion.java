@@ -26,6 +26,7 @@ public class Aplicacion {
 		Date fecha = new Date(millis);		
 		Time hora = new Time(millis);
 		
+		
 		Provincias provincia = new Provincias(1,"Bizkaia");
 		System.out.println("provincia"+bd.insertProvincias(provincia));
 		
