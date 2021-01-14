@@ -1,6 +1,5 @@
 package PSP;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -10,7 +9,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 
 public class PantallaCliente extends JFrame {
-	
+
 	private JLabel mostrarMunicipio;
 
 	public JLabel getMostrarMunicipio() {
@@ -49,7 +48,7 @@ public class PantallaCliente extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		mostrarMunicipio = new JLabel("El municipio seleccionado es:");
 		mostrarMunicipio.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		mostrarMunicipio.setBounds(33, 87, 343, 45);
