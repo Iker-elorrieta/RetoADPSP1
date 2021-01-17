@@ -1,5 +1,5 @@
 package modelo;
-// Generated 13 ene. 2021 20:28:42 by Hibernate Tools 5.4.21.Final
+// Generated 16 ene. 2021 14:30:47 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,35 +9,39 @@ import java.util.Set;
  */
 public class Municipios implements java.io.Serializable {
 
-	private int codMuni;
+	private Integer codMuniAuto;
 	private Provincias provincias;
+	private int codMuni;
 	private String nombre;
 	private String descripcion;
 	private Set ubicacioneses = new HashSet(0);
 	private Set estacioneses = new HashSet(0);
 
-	
+	public Municipios() {
+	}
 
-	public Municipios(int codMuni, Provincias provincias, String nombre) {
-		this.codMuni = codMuni;
+	public Municipios(Provincias provincias, int codMuni, String nombre) {
 		this.provincias = provincias;
+		this.codMuni = codMuni;
 		this.nombre = nombre;
 	}
 
-	
-
-	public Municipios() {
-		
-	}
-
-
-
-	public int getCodMuni() {
-		return this.codMuni;
-	}
-
-	public void setCodMuni(int codMuni) {
+	public Municipios(Provincias provincias, int codMuni, String nombre, String descripcion, Set ubicacioneses,
+			Set estacioneses) {
+		this.provincias = provincias;
 		this.codMuni = codMuni;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.ubicacioneses = ubicacioneses;
+		this.estacioneses = estacioneses;
+	}
+
+	public Integer getCodMuniAuto() {
+		return this.codMuniAuto;
+	}
+
+	public void setCodMuniAuto(Integer codMuniAuto) {
+		this.codMuniAuto = codMuniAuto;
 	}
 
 	public Provincias getProvincias() {
@@ -46,6 +50,14 @@ public class Municipios implements java.io.Serializable {
 
 	public void setProvincias(Provincias provincias) {
 		this.provincias = provincias;
+	}
+
+	public int getCodMuni() {
+		return this.codMuni;
+	}
+
+	public void setCodMuni(int codMuni) {
+		this.codMuni = codMuni;
 	}
 
 	public String getNombre() {

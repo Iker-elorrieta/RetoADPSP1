@@ -1,5 +1,5 @@
 package modelo;
-// Generated 13 ene. 2021 20:28:42 by Hibernate Tools 5.4.21.Final
+// Generated 16 ene. 2021 14:30:47 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,30 +9,31 @@ import java.util.Set;
  */
 public class Naturales implements java.io.Serializable {
 
-	private int codEspacio;
+	private Integer codEspacio;
 	private String nombre;
 	private String descripcion;
+	private String tipo;
 	private Set ubicacioneses = new HashSet(0);
 
-	
+	public Naturales() {
+	}
 
-	public Naturales(int codEspacio, String nombre) {
-		this.codEspacio = codEspacio;
+	public Naturales(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public Naturales(int codEspacio, String nombre, String descripcion, Set ubicacioneses) {
-		this.codEspacio = codEspacio;
+	public Naturales(String nombre, String descripcion, String tipo, Set ubicacioneses) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.tipo = tipo;
 		this.ubicacioneses = ubicacioneses;
 	}
 
-	public int getCodEspacio() {
+	public Integer getCodEspacio() {
 		return this.codEspacio;
 	}
 
-	public void setCodEspacio(int codEspacio) {
+	public void setCodEspacio(Integer codEspacio) {
 		this.codEspacio = codEspacio;
 	}
 
@@ -50,6 +51,14 @@ public class Naturales implements java.io.Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getTipo() {
+		return this.tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public Set getUbicacioneses() {

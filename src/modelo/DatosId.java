@@ -1,5 +1,5 @@
 package modelo;
-// Generated 13 ene. 2021 20:28:42 by Hibernate Tools 5.4.21.Final
+// Generated 16 ene. 2021 14:30:47 by Hibernate Tools 5.4.21.Final
 
 import java.util.Date;
 
@@ -12,7 +12,8 @@ public class DatosId implements java.io.Serializable {
 	private String hora;
 	private int codEst;
 
-	
+	public DatosId() {
+	}
 
 	public DatosId(Date fecha, String hora, int codEst) {
 		this.fecha = fecha;
