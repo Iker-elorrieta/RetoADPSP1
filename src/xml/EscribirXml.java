@@ -11,8 +11,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import modelo.Espacios;
 import modelo.Municipios;
-import modelo.Naturales;
 import modelo.Provincias;
 
 public class EscribirXml {
@@ -114,7 +114,7 @@ public class EscribirXml {
 
 	}
 
-	public boolean generarXmlEspacios(ArrayList<Naturales> naturales) {
+	public boolean generarXmlEspacios(ArrayList<Espacios> espacios) {
 
 		File xml = new File("xmlEspaciosNaturales.xml");
 		try {
@@ -124,25 +124,25 @@ public class EscribirXml {
 			Element eNaturales = doc.createElement("municipios");
 			doc.appendChild(eNaturales);
 			
-			for (Naturales natural : naturales) {
+			for (Espacios espacio : espacios) {
 
 				Element eNatural = doc.createElement("municipio");
 				eNaturales.appendChild(eNatural);
 
 				Element eNombre = doc.createElement("nombre");
-				eNombre.appendChild(doc.createTextNode(natural.getNombre()));
+				eNombre.appendChild(doc.createTextNode(espacio.getNombre()));
 				eNatural.appendChild(eNombre);
 
 				Element eCodigo = doc.createElement("codigo_espacio");
-				eCodigo.appendChild(doc.createTextNode(String.valueOf(natural.getCodEspacio())));
+				eCodigo.appendChild(doc.createTextNode(String.valueOf(espacio.getCodEspacio())));
 				eNatural.appendChild(eCodigo);
 
 				Element eTipo = doc.createElement("tipo");
-				eTipo.appendChild(doc.createTextNode(String.valueOf(natural.getTipo())));
+				eTipo.appendChild(doc.createTextNode(String.valueOf(espacio.getTipo())));
 				eNatural.appendChild(eTipo);
 
 				Element eDescripcion = doc.createElement("descripcion");
-				eDescripcion.appendChild(doc.createTextNode(String.valueOf(natural.getDescripcion())));
+				eDescripcion.appendChild(doc.createTextNode(String.valueOf(espacio.getDescripcion())));
 				eNatural.appendChild(eDescripcion);
 
 			}

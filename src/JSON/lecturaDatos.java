@@ -7,9 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import dao.BaseDatos;
+import modelo.Espacios;
 import modelo.Estaciones;
 import modelo.Municipios;
-import modelo.Naturales;
 import modelo.Provincias;
 import modelo.Ubicaciones;
 import modelo.UbicacionesId;
@@ -21,18 +21,20 @@ public class lecturaDatos {
 		// TODO Auto-generated method stub
 		String urlMunicipios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/pueblos_euskadi_turismo/opendata/herriak.json";
 		String urlEspacios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/playas_de_euskadi/opendata/espacios-naturales.json";
-		String urlDatos = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
 		String urlEstaciones = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/estaciones.json";
+		String urlDatos = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
 
 		comprobarPagina.comprobarPagina(urlMunicipios);
-//		comprobarPagina.comprobarPagina(urlEspacios);
+		comprobarPagina.comprobarPagina(urlEspacios);
+		comprobarPagina.comprobarPagina(urlEstaciones);
+
 //		comprobarPagina.comprobarPagina(urlDatos);
-//		comprobarPagina.comprobarPagina(urlEstaciones)
 
 		String respuesta = "";
 		try {
 			respuesta = peticionHttpGetMunicipios(urlMunicipios);
-//			respuesta = peticionHttpGetEspacios(urlEspacios);
+			respuesta = peticionHttpGetEspacios(urlEspacios);
+			respuesta = peticionHttpGetEstaciones(urlEstaciones);
 			// System.out.println(respuesta);
 		} catch (Exception e) {
 			// Manejar excepción
@@ -129,7 +131,7 @@ public class lecturaDatos {
 
 	public static String peticionHttpGetEspacios(String urlParaVisitar) throws Exception {
 
-		ArrayList<Naturales> listaEspaciosNaturales = new ArrayList<>();
+		ArrayList<Espacios> listaEspacios = new ArrayList<>();
 		ArrayList<Ubicaciones> listaUbicaciones = new ArrayList<>();
 		ArrayList<String> listaCodMuni = new ArrayList<>();
 		ArrayList<Integer> codigosMuniFiltrado = new ArrayList<>();
@@ -138,7 +140,7 @@ public class lecturaDatos {
 		int codMuni = 0;
 		int codEspacio = 0;
 		BaseDatos bd = new BaseDatos();
-		Naturales natural = new Naturales();
+		Espacios espacio = new Espacios();
 
 		StringBuilder resultado = new StringBuilder();
 		URL url = new URL(urlParaVisitar);
@@ -156,22 +158,22 @@ public class lecturaDatos {
 				linea = linea.split(" ")[0];
 
 			} else if (linea.contains("documentName")) {
-				natural = new Naturales();
+				espacio = new Espacios();
 				codEspacio++;
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-				natural.setNombre(linea);
+				espacio.setNombre(linea);
 			} else if (linea.contains("turismDescription\" : \"<p>")) {
 				linea = linea.split(" \"")[2];
-				natural.setDescripcion(linea);
+				espacio.setDescripcion(linea);
 
 			} else if (linea.contains("natureType")) {
 				linea = linea.split("\" ")[1];
 				linea = linea.split(" \"")[1];
 				linea = linea.split(" ")[0];
 				linea = linea.split("\"")[0];
-				natural.setTipo(linea);
-				listaEspaciosNaturales.add(natural);
+				espacio.setTipo(linea);
+				listaEspacios.add(espacio);
 
 			} else if (linea.contains("municipalitycode")) {
 				linea = linea.split(" \"")[2];
@@ -200,7 +202,7 @@ public class lecturaDatos {
 				ArrayList<Municipios> municipios = bd.obtenerMunicipios(codigosMuniFiltrado, codigosProvFiltrado);
 				for (Municipios municipio : municipios) {
 					UbicacionesId uId = new UbicacionesId(codEspacio, municipio.getCodMuni());
-					Ubicaciones ubicacion = new Ubicaciones(uId, municipio, natural);
+					Ubicaciones ubicacion = new Ubicaciones(uId,espacio,municipio);
 					listaUbicaciones.add(ubicacion);
 				}
 
@@ -209,8 +211,8 @@ public class lecturaDatos {
 			resultado.append(linea + "\n");
 		}
 		EscribirXml ex = new EscribirXml();
-		ex.generarXmlEspacios(listaEspaciosNaturales);
-		bd.insertNaturales(listaEspaciosNaturales);
+		ex.generarXmlEspacios(listaEspacios);
+		bd.insertEspacios(listaEspacios);
 		bd.insertUbicaciones(listaUbicaciones);
 		rd.close();
 		return resultado.toString();
@@ -218,12 +220,9 @@ public class lecturaDatos {
 
 	public static String peticionHttpGetEstaciones(String urlParaVisitar) throws Exception {
 
-		ArrayList<Municipios> listaMunicipios = new ArrayList<>();
-		String nombreProv = "";
-		String nombreMuni = "";
-		int codMuni = 0;
+		ArrayList<Municipios> listaEspacios = new ArrayList<>();
+		int codEstacion = 0;
 		BaseDatos bd = new BaseDatos();
-		Municipios municipio = new Municipios();
 		Estaciones estacion = new Estaciones();
 		StringBuilder resultado = new StringBuilder();
 		URL url = new URL(urlParaVisitar);
@@ -232,7 +231,6 @@ public class lecturaDatos {
 		conexion.setRequestMethod("GET");
 		BufferedReader rd = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
 		String linea;
-
 		while ((linea = rd.readLine()) != null) {
 
 			if (linea.contains("jsonCallback")) {
@@ -240,57 +238,27 @@ public class lecturaDatos {
 			} else if (linea.contains("]")) {
 				linea = linea.split(" ")[0];
 
-			} else if (linea.contains("Name") & nombreMuni == "") {
-				municipio = new Municipios();
-				linea = linea.split("\" ")[1];
+			} else if (linea.contains("name")) {
+				estacion = new Estaciones();
+				codEstacion++;
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+				estacion.setNombre(linea);
+			} else if (linea.contains("url")) {
 				linea = linea.split(" \"")[1];
-				linea = linea.split(" ")[0];
 				linea = linea.split("\"")[0];
-				nombreMuni = linea;
-				municipio.setNombre(nombreMuni);
+				//estacion.se(linea);
 
-			} else if (linea.contains("municipalitycode")) {
-				linea = linea.split(" \"")[2];
-				linea = linea.split(" ")[0];
-				linea = linea.split(",")[0];
-				linea = linea.split("\"")[0];
-				codMuni = Integer.parseInt(linea);
-				municipio.setCodMuni(codMuni);
-				nombreMuni = "";
+			
+				
 
-			} else if (linea.contains("turismDescription")) {
-				linea = linea.split(" \"")[2];
-				municipio.setDescripcion(linea);
-
-			} else if (linea.contains("territory") & nombreProv == "") {
-				linea = linea.split("\" ")[1];
-				linea = linea.split(" \"")[1];
-				linea = linea.split(" ")[0];
-				nombreProv = linea;
-
-			} else if (linea.contains("territorycode")) {
-				linea = linea.split(" \"")[2];
-				linea = linea.split(" ")[0];
-				linea = linea.split(",")[0];
-				linea = linea.split("\"")[0];
-				int codProv = Integer.parseInt(linea);
-				Provincias provincia = bd.obtenerProvincia(codProv);
-
-				if (provincia == null) {
-					provincia = new Provincias(codProv, nombreProv);
-					bd.insertProvincias(provincia);
-					municipio.setProvincias(provincia);
-				}
-
-				municipio.setProvincias(provincia);
-				nombreProv = "";
-				listaMunicipios.add(municipio);
 			}
+
 			resultado.append(linea + "\n");
 		}
-
+		
 		rd.close();
-		bd.insertMunicipios(listaMunicipios);
+		bd.insertMunicipios(listaEspacios);
 		return resultado.toString();
 	}
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 16 ene. 2021 14:30:47 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 17 ene. 2021 22:11:29 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Estaciones" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="estaciones">
         <id name="codEst" type="int">
@@ -21,11 +21,17 @@
         <property generated="never" lazy="false" name="longitud" optimistic-lock="true" type="java.lang.Double" unique="false">
             <column name="Longitud" precision="22" scale="0"/>
         </property>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datoses" optimistic-lock="true" sort="unsorted" table="datos">
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datoshorarioses" optimistic-lock="true" sort="unsorted" table="datoshorarios">
             <key on-delete="noaction">
                 <column name="CodEst" not-null="true"/>
             </key>
-            <one-to-many class="modelo.Datos" embed-xml="true" not-found="exception"/>
+            <one-to-many class="modelo.Datoshorarios" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datosdiarioses" optimistic-lock="true" sort="unsorted" table="datosdiarios">
+            <key on-delete="noaction">
+                <column name="CodEst" not-null="true"/>
+            </key>
+            <one-to-many class="modelo.Datosdiarios" embed-xml="true" not-found="exception"/>
         </set>
     </class>
 </hibernate-mapping>

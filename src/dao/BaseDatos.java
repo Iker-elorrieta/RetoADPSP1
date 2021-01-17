@@ -10,18 +10,24 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-import modelo.Datos;
+import modelo.Datosdiarios;
+import modelo.Datoshorarios;
+import modelo.Espacios;
 import modelo.Estaciones;
 import modelo.Hashes;
 import modelo.Municipios;
-import modelo.Naturales;
 import modelo.Provincias;
 import modelo.Ubicaciones;
 import modelo.Usuarios;
 
 public class BaseDatos {
+	
+	SessionFactory sesion = HibernateUtil.getSessionFactory();
+	Session session = sesion.openSession();
+	Transaction tx = session.beginTransaction();
 
-	public boolean insertDatos(Datos datos) {
+
+	public boolean insertDatosHorarios(Datoshorarios datos) {
 
 		try {
 
@@ -40,7 +46,25 @@ public class BaseDatos {
 			return false;
 		}
 	}
+	public boolean insertDatosDiarios(Datosdiarios datos) {
 
+		try {
+
+			SessionFactory sesion = HibernateUtil.getSessionFactory();
+			Session session = sesion.openSession();
+			Transaction tx = session.beginTransaction();
+
+			session.save(datos);
+
+			tx.commit();
+			session.close();
+
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
+	}
 	public boolean insertEstaciones(Estaciones estacion) {
 		System.out.println("d");
 		try {
@@ -88,7 +112,7 @@ public class BaseDatos {
 
 	}
 
-	public boolean insertNaturales(ArrayList<Naturales> naturales) {
+	public boolean insertEspacios(ArrayList<Espacios> espacios) {
 
 		try {
 
@@ -96,8 +120,8 @@ public class BaseDatos {
 			Session session = sesion.openSession();
 			Transaction tx = session.beginTransaction();
 
-			for (Naturales natural : naturales) {
-				session.save(natural);
+			for (Espacios espacio : espacios) {
+				session.save(espacio);
 			}
 
 			tx.commit();
@@ -259,6 +283,7 @@ public class BaseDatos {
 
 		return municipios;
 	}
+	
 
 	public static class HibernateUtil {
 		private static final SessionFactory sessionFactory = buildSessionFactory();
