@@ -25,14 +25,14 @@ public class lecturaDatos {
 		String urlEstaciones = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/estaciones.json";
 
 		comprobarPagina.comprobarPagina(urlMunicipios);
-		comprobarPagina.comprobarPagina(urlEspacios);
+//		comprobarPagina.comprobarPagina(urlEspacios);
 //		comprobarPagina.comprobarPagina(urlDatos);
-//		comprobarPagina.comprobarPagina(urlMunicipios)
+//		comprobarPagina.comprobarPagina(urlEstaciones)
 
 		String respuesta = "";
 		try {
 			respuesta = peticionHttpGetMunicipios(urlMunicipios);
-			respuesta = peticionHttpGetEspacios(urlEspacios);
+//			respuesta = peticionHttpGetEspacios(urlEspacios);
 			// System.out.println(respuesta);
 		} catch (Exception e) {
 			// Manejar excepción
@@ -91,6 +91,8 @@ public class lecturaDatos {
 				linea = linea.split("\" ")[1];
 				linea = linea.split(" \"")[1];
 				linea = linea.split(" ")[0];
+				linea = linea.split("\"")[0];
+
 				nombreProv = linea;
 
 			} else if (linea.contains("territorycode")) {
