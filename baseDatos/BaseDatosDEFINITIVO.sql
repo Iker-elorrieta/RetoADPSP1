@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `datosdiarios` (
-  `Estacion` varchar(50) NOT NULL,
+  `CodEst` int(6) NOT NULL,
   `Fecha` date NOT NULL,
   `Hora` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
   `NOgm3` int(11) DEFAULT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE `datoshorarios` (
   `PM10gm3` double NULL,
   `PM25gm3` double NULL,
   `SO2gm3` double NULL,
-  `Estacion` varchar(50) NOT NULL
+  `CodEst` int(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -166,15 +166,15 @@ CREATE TABLE `usuarios` (
 -- Indices de la tabla `datosdiarios`
 --
 ALTER TABLE `datosdiarios`
-  ADD PRIMARY KEY (`Fecha`,`Hora`,`Estacion`) USING BTREE,
-  ADD KEY `Estacion` (`Estacion`);
+  ADD PRIMARY KEY (`Fecha`,`Hora`,`CodEst`) USING BTREE,
+  ADD KEY `CodEst` (`CodEst`);
 
 --
 -- Indices de la tabla `datoshorarios`
 --
 ALTER TABLE `datoshorarios`
-  ADD PRIMARY KEY (`Fecha`,`Hora`,`Estacion`) USING BTREE,
-  ADD KEY `Estacion` (`Estacion`);
+  ADD PRIMARY KEY (`Fecha`,`Hora`,`CodEst`) USING BTREE,
+  ADD KEY `CodEst` (`CodEst`);
 
 --
 -- Indices de la tabla `espacios`
@@ -245,13 +245,13 @@ ALTER TABLE `usuarios`
 -- Filtros para la tabla `datosdiarios`
 --
 ALTER TABLE `datosdiarios`
-  ADD CONSTRAINT `datosdiarios_ibfk_1` FOREIGN KEY (`Estacion`) REFERENCES `estaciones` (`Nombre`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `datosdiarios_ibfk_1` FOREIGN KEY (`CodEst`) REFERENCES `estaciones` (`CodEst`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `datoshorarios`
 --
 ALTER TABLE `datoshorarios`
-  ADD CONSTRAINT `datoshorarios_ibfk_1` FOREIGN KEY (`Estacion`) REFERENCES `estaciones` (`Nombre`)  ON UPDATE CASCADE;
+  ADD CONSTRAINT `datoshorarios_ibfk_1` FOREIGN KEY (`CodEst`) REFERENCES `estaciones` (`CodEst`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `municipios`
