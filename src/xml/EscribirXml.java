@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import modelo.Espacios;
+import modelo.Estaciones;
 import modelo.Municipios;
 import modelo.Provincias;
 
@@ -144,6 +145,68 @@ public class EscribirXml {
 				Element eDescripcion = doc.createElement("descripcion");
 				eDescripcion.appendChild(doc.createTextNode(String.valueOf(espacio.getDescripcion())));
 				eNatural.appendChild(eDescripcion);
+
+			}
+
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = (Transformer) transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(xml);
+
+			((javax.xml.transform.Transformer) transformer).transform(source, result);
+
+			return true;
+
+		} catch (Exception e) {
+			System.out.println("!ERROR AL CREAR DOCUMENTO¡");
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	public boolean generarXmlEstaciones(ArrayList<Estaciones> estaciones) {
+
+		File xml = new File("xmlEspaciosEstaciones.xml");
+		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db.newDocument();
+			Element eEstaciones = doc.createElement("estaciones");
+			doc.appendChild(eEstaciones);
+			
+			for (Estaciones estacion : estaciones) {
+
+				Element eEstacion = doc.createElement("estacion");
+				eEstaciones.appendChild(eEstacion);
+
+				Element eNombre = doc.createElement("nombre");
+				eNombre.appendChild(doc.createTextNode(estacion.getNombre()));
+				eEstacion.appendChild(eNombre);
+
+				Element eCodigo = doc.createElement("codigo_estacion");
+				eCodigo.appendChild(doc.createTextNode(String.valueOf(estacion.getCodEst())));
+				eEstacion.appendChild(eCodigo);
+
+				Element eProvincia = doc.createElement("provincia");
+				eProvincia.appendChild(doc.createTextNode(estacion.getProvincia()));
+				eEstacion.appendChild(eProvincia);
+
+				Element eMunicipio = doc.createElement("municipio");
+				eMunicipio.appendChild(doc.createTextNode(String.valueOf(estacion.getMunicipio())));
+				eEstacion.appendChild(eMunicipio);
+				
+				Element eDireccion = doc.createElement("direccion");
+				eDireccion.appendChild(doc.createTextNode(estacion.getDireccion()));
+				eEstacion.appendChild(eDireccion);
+				
+				Element eLatitud = doc.createElement("latitud");
+				eLatitud.appendChild(doc.createTextNode(estacion.getLatitud()));
+				eEstacion.appendChild(eLatitud);
+				
+				Element eLongitud = doc.createElement("longitud");
+				eLongitud.appendChild(doc.createTextNode(estacion.getLongitud()));
+				eEstacion.appendChild(eLongitud);
 
 			}
 

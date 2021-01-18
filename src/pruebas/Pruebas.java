@@ -7,12 +7,9 @@ import java.sql.Time;
 import static org.junit.Assert.assertFalse;
 import org.junit.jupiter.api.Test;
 import dao.BaseDatos;
-import modelo.Datos;
-import modelo.DatosId;
 import modelo.Estaciones;
 import modelo.Hashes;
 import modelo.Municipios;
-import modelo.Naturales;
 import modelo.Provincias;
 import modelo.Ubicaciones;
 import modelo.UbicacionesId;
@@ -31,15 +28,15 @@ public class Pruebas {
 		assertEquals(true, b);
 	}
 
-	@Test
-	public void testInsercionUsuario() {
-
-		BaseDatos bd = new BaseDatos();
-		Usuarios usuario = new Usuarios(0, "prueba", "abc");
-		boolean b = bd.insertUsuarios(usuario);
-
-		assertEquals(true, b);
-	}
+//	@Test
+//	public void testInsercionUsuario() {
+//
+//		BaseDatos bd = new BaseDatos();
+//		Usuarios usuario = new Usuarios(0, "prueba", "abc");
+//		boolean b = bd.insertUsuarios(usuario);
+//
+//		assertEquals(true, b);
+//	}
 
 //	@Test
 //	public void testInsercionDato() {

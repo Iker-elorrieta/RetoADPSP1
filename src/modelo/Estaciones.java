@@ -1,5 +1,5 @@
 package modelo;
-// Generated 17 ene. 2021 22:11:29 by Hibernate Tools 5.4.21.Final
+// Generated 18 ene. 2021 10:51:22 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,27 +10,28 @@ import java.util.Set;
 public class Estaciones implements java.io.Serializable {
 
 	private int codEst;
-	private Municipios municipios;
 	private String nombre;
+	private String provincia;
+	private String municipio;
 	private String direccion;
-	private Double latitud;
-	private Double longitud;
+	private String latitud;
+	private String longitud;
 	private Set datoshorarioses = new HashSet(0);
 	private Set datosdiarioses = new HashSet(0);
 
 	public Estaciones() {
 	}
 
-	public Estaciones(int codEst, Municipios municipios) {
+	public Estaciones(int codEst) {
 		this.codEst = codEst;
-		this.municipios = municipios;
 	}
 
-	public Estaciones(int codEst, Municipios municipios, String nombre, String direccion, Double latitud,
-			Double longitud, Set datoshorarioses, Set datosdiarioses) {
+	public Estaciones(int codEst, String nombre, String provincia, String municipio, String direccion, String latitud,
+			String longitud, Set datoshorarioses, Set datosdiarioses) {
 		this.codEst = codEst;
-		this.municipios = municipios;
 		this.nombre = nombre;
+		this.provincia = provincia;
+		this.municipio = municipio;
 		this.direccion = direccion;
 		this.latitud = latitud;
 		this.longitud = longitud;
@@ -46,20 +47,28 @@ public class Estaciones implements java.io.Serializable {
 		this.codEst = codEst;
 	}
 
-	public Municipios getMunicipios() {
-		return this.municipios;
-	}
-
-	public void setMunicipios(Municipios municipios) {
-		this.municipios = municipios;
-	}
-
 	public String getNombre() {
 		return this.nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getProvincia() {
+		return this.provincia;
+	}
+
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
+	}
+
+	public String getMunicipio() {
+		return this.municipio;
+	}
+
+	public void setMunicipio(String municipio) {
+		this.municipio = municipio;
 	}
 
 	public String getDireccion() {
@@ -70,19 +79,19 @@ public class Estaciones implements java.io.Serializable {
 		this.direccion = direccion;
 	}
 
-	public Double getLatitud() {
+	public String getLatitud() {
 		return this.latitud;
 	}
 
-	public void setLatitud(Double latitud) {
+	public void setLatitud(String latitud) {
 		this.latitud = latitud;
 	}
 
-	public Double getLongitud() {
+	public String getLongitud() {
 		return this.longitud;
 	}
 
-	public void setLongitud(Double longitud) {
+	public void setLongitud(String longitud) {
 		this.longitud = longitud;
 	}
 

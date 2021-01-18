@@ -21,11 +21,10 @@ import modelo.Ubicaciones;
 import modelo.Usuarios;
 
 public class BaseDatos {
-	
+
 	SessionFactory sesion = HibernateUtil.getSessionFactory();
 	Session session = sesion.openSession();
 	Transaction tx = session.beginTransaction();
-
 
 	public boolean insertDatosHorarios(Datoshorarios datos) {
 
@@ -46,6 +45,7 @@ public class BaseDatos {
 			return false;
 		}
 	}
+
 	public boolean insertDatosDiarios(Datosdiarios datos) {
 
 		try {
@@ -65,17 +65,16 @@ public class BaseDatos {
 			return false;
 		}
 	}
-	public boolean insertEstaciones(Estaciones estacion) {
-		System.out.println("d");
+
+	public boolean insertEstaciones(ArrayList<Estaciones> estaciones) {
 		try {
 
 			SessionFactory sesion = HibernateUtil.getSessionFactory();
-
 			Session session = sesion.openSession();
-
 			Transaction tx = session.beginTransaction();
-
-			session.save(estacion);
+			for (Estaciones estacion : estaciones) {
+				session.save(estacion);
+			}
 
 			tx.commit();
 			session.close();
@@ -264,26 +263,24 @@ public class BaseDatos {
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
 
-		for (int i = 0; i < codigosMuni.size() ; i++) {
+		for (int i = 0; i < codigosMuni.size(); i++) {
 			String hql = " from Municipios where CodProv = " + codigosProv.get(i) + " and CodMuni = "
 					+ codigosMuni.get(i) + "";
 			Query q = session.createQuery(hql);
-			List<Municipios> emple =  q.list();
-			
-			for  (int x=0;x<emple.size();x++)	{
-				
+			List<Municipios> emple = q.list();
+
+			for (int x = 0; x < emple.size(); x++) {
+
 				municipio = emple.get(i);
 				municipios.add(municipio);
 			}
-			
-			
+
 		}
 
 		session.close();
 
 		return municipios;
 	}
-	
 
 	public static class HibernateUtil {
 		private static final SessionFactory sessionFactory = buildSessionFactory();

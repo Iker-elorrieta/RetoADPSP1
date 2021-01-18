@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 17 ene. 2021 22:11:29 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 18 ene. 2021 10:51:22 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Estaciones" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="estaciones">
         <id name="codEst" type="int">
             <column name="CodEst"/>
             <generator class="assigned"/>
         </id>
-        <many-to-one class="modelo.Municipios" embed-xml="true" fetch="select" insert="true" name="municipios" not-found="exception" optimistic-lock="true" unique="false" update="true">
-            <column name="CodMuni" not-null="true"/>
-        </many-to-one>
         <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
             <column length="50" name="Nombre"/>
+        </property>
+        <property generated="never" lazy="false" name="provincia" optimistic-lock="true" type="string" unique="false">
+            <column length="30" name="Provincia"/>
+        </property>
+        <property generated="never" lazy="false" name="municipio" optimistic-lock="true" type="string" unique="false">
+            <column length="50" name="Municipio"/>
         </property>
         <property generated="never" lazy="false" name="direccion" optimistic-lock="true" type="string" unique="false">
             <column length="100" name="Direccion"/>
         </property>
-        <property generated="never" lazy="false" name="latitud" optimistic-lock="true" type="java.lang.Double" unique="false">
-            <column name="Latitud" precision="22" scale="0"/>
+        <property generated="never" lazy="false" name="latitud" optimistic-lock="true" type="string" unique="false">
+            <column length="30" name="Latitud"/>
         </property>
-        <property generated="never" lazy="false" name="longitud" optimistic-lock="true" type="java.lang.Double" unique="false">
-            <column name="Longitud" precision="22" scale="0"/>
+        <property generated="never" lazy="false" name="longitud" optimistic-lock="true" type="string" unique="false">
+            <column length="30" name="Longitud"/>
         </property>
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datoshorarioses" optimistic-lock="true" sort="unsorted" table="datoshorarios">
             <key on-delete="noaction">
