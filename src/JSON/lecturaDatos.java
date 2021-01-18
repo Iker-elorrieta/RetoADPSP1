@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import dao.BaseDatos;
 import modelo.Datosdiarios;
+import modelo.DatosdiariosId;
 import modelo.Datoshorarios;
 import modelo.Espacios;
 import modelo.Estaciones;
@@ -22,12 +24,12 @@ public class lecturaDatos {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-//		String urlMunicipios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/pueblos_euskadi_turismo/opendata/herriak.json";
+		String urlMunicipios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/pueblos_euskadi_turismo/opendata/herriak.json";
 //		String urlEspacios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/playas_de_euskadi/opendata/espacios-naturales.json";
 //		String urlEstaciones = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/estaciones.json";
 		String urlDatos = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
 
-//		comprobarPagina.comprobarPagina(urlMunicipios);
+		comprobarPagina.comprobarPagina(urlMunicipios);
 //		comprobarPagina.comprobarPagina(urlEspacios);
 //		comprobarPagina.comprobarPagina(urlEstaciones);
 
@@ -35,7 +37,7 @@ public class lecturaDatos {
 
 		String respuesta = "";
 		try {
-//			respuesta = peticionHttpGetMunicipios(urlMunicipios);
+			respuesta = peticionHttpGetMunicipios(urlMunicipios);
 //			respuesta = peticionHttpGetEspacios(urlEspacios);
 //			respuesta = peticionHttpGetEstaciones(urlEstaciones);
 			// System.out.println(respuesta);
@@ -310,7 +312,6 @@ public class lecturaDatos {
 				linea = linea.split(" ")[1];
 			} else if (linea.contains("]")) {
 				linea = linea.split(" ")[0];
-
 			} else if (linea.contains("name")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
@@ -325,7 +326,7 @@ public class lecturaDatos {
 			} else if (linea.contains("url") & linea.contains("datos_horarios")) {
 				linea = linea.split(" \"")[1];
 				linea = linea.split("\"")[0];
-				// estacion.se(linea);
+				String urlHorario = linea;
 
 			}
 
@@ -333,7 +334,81 @@ public class lecturaDatos {
 		}
 
 		rd.close();
-		
+
+		return resultado.toString();
+	}
+
+	public static String peticionHttpGetDatosHorarios(String urlParaVisitar) throws Exception {
+
+		ArrayList<Datoshorarios> listaDatosHorarios = new ArrayList<>();
+		ArrayList<Datosdiarios> listaDatosDiarios = new ArrayList<>();
+
+		int codEstacion = 0;
+		BaseDatos bd = new BaseDatos();
+		Datoshorarios datosHorarios = new Datoshorarios();
+		DatosdiariosId datosHorariosId = new DatosdiariosId();
+		StringBuilder resultado = new StringBuilder();
+		URL url = new URL(urlParaVisitar);
+
+		HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+		conexion.setRequestMethod("GET");
+		BufferedReader rd = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
+		String linea;
+		while ((linea = rd.readLine()) != null) {
+
+			if (linea.contains("jsonCallback")) {
+				linea = linea.split(" ")[1];
+			} else if (linea.contains("]")) {
+				linea = linea.split(" ")[0];
+
+			} else if (linea.contains("Date")) {
+				datosHorarios = new Datoshorarios();
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+				int dia = Integer.parseInt(linea.split("/")[0]);
+				int mes = Integer.parseInt(linea.split("/")[1].split("/")[0]);
+				int anio = Integer.parseInt(linea.split("/")[1].split("/")[1]);
+				Date fecha = new Date(dia,mes,anio);
+				datosHorariosId.setFecha(fecha);
+
+			} else if (linea.contains("Hour")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+
+			} else if (linea.contains("COmgm3")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+
+			} else if (linea.contains("CO8hmgm3")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+
+			} else if (linea.contains("NOgm3")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+			} else if (linea.contains("NO2gm3")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+
+			} else if (linea.contains("NOXgm3")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+			} else if (linea.contains("PM10gm3")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+			} else if (linea.contains("PM25gm3")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+			} else if (linea.contains("SO2gm3")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+
+			}
+			resultado.append(linea + "\n");
+		}
+
+		rd.close();
+
 		return resultado.toString();
 	}
 }
