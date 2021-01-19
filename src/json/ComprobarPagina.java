@@ -1,4 +1,4 @@
-package JSON;
+package json;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,7 +12,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-public class comprobarPagina {
+public class ComprobarPagina {
 
 public static void comprobarPagina(String url)
     {

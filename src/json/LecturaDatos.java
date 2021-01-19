@@ -1,4 +1,4 @@
-package JSON;
+package json;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,20 +22,20 @@ import modelo.Ubicaciones;
 import modelo.UbicacionesId;
 import xml.EscribirXml;
 
-public class lecturaDatos {
+public class LecturaDatos {
 	static ArrayList<Estaciones> listaEstaciones = new ArrayList<>();
 
-	public static void main(String[] args) {
+	public static boolean main(String[] args) {
 		// TODO Auto-generated method stub
 		String urlMunicipios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/pueblos_euskadi_turismo/opendata/herriak.json";
 		String urlEspacios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/playas_de_euskadi/opendata/espacios-naturales.json";
 		String urlEstaciones = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/estaciones.json";
 		String urlDatos = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
 
-		comprobarPagina.comprobarPagina(urlMunicipios);
-		comprobarPagina.comprobarPagina(urlEspacios);
-		comprobarPagina.comprobarPagina(urlEstaciones);
-		comprobarPagina.comprobarPagina(urlDatos);
+		ComprobarPagina.comprobarPagina(urlMunicipios);
+		ComprobarPagina.comprobarPagina(urlEspacios);
+		ComprobarPagina.comprobarPagina(urlEstaciones);
+		ComprobarPagina.comprobarPagina(urlDatos);
 
 		String respuesta = "";
 		try {
@@ -45,9 +45,11 @@ public class lecturaDatos {
 			respuesta = peticionHttpGetDatos(urlDatos);
 			// System.out.println(respuesta);
 		} catch (Exception e) {
-			// Manejar excepción
 			e.printStackTrace();
+			return false;
+
 		}
+		return true;
 	}
 
 	public static String peticionHttpGetMunicipios(String urlParaVisitar) throws Exception {
@@ -440,9 +442,9 @@ public class lecturaDatos {
 			resultado.append(linea + "\n");
 		}
 
-		bd.insertDatoss(listaDatos);
+		bd.insertDatos(listaDatos);
 		EscribirXml xml = new EscribirXml();
-
+		xml.generarXmlDatos(listaDatos);
 		rd.close();
 
 		return resultado.toString();

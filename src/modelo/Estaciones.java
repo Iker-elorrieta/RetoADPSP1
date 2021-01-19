@@ -21,9 +21,7 @@ public class Estaciones implements java.io.Serializable {
 	public Estaciones() {
 	}
 
-	public Estaciones(int codEst) {
-		this.codEst = codEst;
-	}
+	
 
 	public Estaciones(int codEst, String nombre, String provincia, String municipio, String direccion, String latitud,
 			String longitud, Set datoses) {

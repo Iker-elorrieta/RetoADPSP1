@@ -24,7 +24,7 @@ public class BaseDatos {
 	Session session = sesion.openSession();
 	Transaction tx = session.beginTransaction();
 
-	public boolean insertDatoss(ArrayList<Datos> datos) {
+	public boolean insertDatos(ArrayList<Datos> datos) {
 
 		try {
 
@@ -75,7 +75,6 @@ public class BaseDatos {
 			Transaction tx = session.beginTransaction();
 
 			for (Municipios municipio : municipios) {
-				// System.out.println(municipio.getCodMuni()+municipio.getDescripcion()+municipio.getNombre()+municipio.getProvincias().getNombre());
 				session.save(municipio);
 			}
 
