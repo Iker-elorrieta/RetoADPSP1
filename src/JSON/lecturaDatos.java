@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Date;
+import java.sql.Time;
+import java.util.Date;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import dao.BaseDatos;
-import modelo.Datosdiarios;
-import modelo.DatosdiariosId;
-import modelo.Datoshorarios;
+import modelo.Datos;
+import modelo.DatosId;
+
 import modelo.Espacios;
 import modelo.Estaciones;
 import modelo.Municipios;
@@ -25,21 +28,21 @@ public class lecturaDatos {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String urlMunicipios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/pueblos_euskadi_turismo/opendata/herriak.json";
-//		String urlEspacios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/playas_de_euskadi/opendata/espacios-naturales.json";
-//		String urlEstaciones = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/estaciones.json";
+		String urlEspacios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/playas_de_euskadi/opendata/espacios-naturales.json";
+		String urlEstaciones = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/estaciones.json";
 		String urlDatos = "https://opendata.euskadi.eus/contenidos/ds_informes_estudios/calidad_aire_2021/es_def/adjuntos/index.json";
 
 		comprobarPagina.comprobarPagina(urlMunicipios);
-//		comprobarPagina.comprobarPagina(urlEspacios);
-//		comprobarPagina.comprobarPagina(urlEstaciones);
-
-//		comprobarPagina.comprobarPagina(urlDatos);
+		comprobarPagina.comprobarPagina(urlEspacios);
+		comprobarPagina.comprobarPagina(urlEstaciones);
+		comprobarPagina.comprobarPagina(urlDatos);
 
 		String respuesta = "";
 		try {
 			respuesta = peticionHttpGetMunicipios(urlMunicipios);
-//			respuesta = peticionHttpGetEspacios(urlEspacios);
-//			respuesta = peticionHttpGetEstaciones(urlEstaciones);
+			respuesta = peticionHttpGetEspacios(urlEspacios);
+			respuesta = peticionHttpGetEstaciones(urlEstaciones);
+			respuesta = peticionHttpGetDatos(urlDatos);
 			// System.out.println(respuesta);
 		} catch (Exception e) {
 			// Manejar excepción
@@ -138,7 +141,6 @@ public class lecturaDatos {
 
 		ArrayList<Espacios> listaEspacios = new ArrayList<>();
 		ArrayList<Ubicaciones> listaUbicaciones = new ArrayList<>();
-		ArrayList<String> listaCodMuni = new ArrayList<>();
 		ArrayList<Integer> codigosMuniFiltrado = new ArrayList<>();
 		ArrayList<Integer> codigosProvFiltrado = new ArrayList<>();
 		String[] codigosMuni = null;
@@ -168,6 +170,7 @@ public class lecturaDatos {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
 				espacio.setNombre(linea);
+				espacio.setCodEspacio(codEspacio);
 			} else if (linea.contains("turismDescription\" : \"<p>")) {
 				linea = linea.split(" \"")[2];
 				espacio.setDescripcion(linea);
@@ -210,7 +213,6 @@ public class lecturaDatos {
 					Ubicaciones ubicacion = new Ubicaciones(uId, espacio, municipio);
 					listaUbicaciones.add(ubicacion);
 				}
-
 			}
 
 			resultado.append(linea + "\n");
@@ -292,13 +294,8 @@ public class lecturaDatos {
 
 	public static String peticionHttpGetDatos(String urlParaVisitar) throws Exception {
 
-		ArrayList<Datoshorarios> listaDatosHorarios = new ArrayList<>();
-		ArrayList<Datosdiarios> listaDatosDiarios = new ArrayList<>();
-
-		int codEstacion = 0;
-		BaseDatos bd = new BaseDatos();
-		Datoshorarios datosHorarios = new Datoshorarios();
-		Datosdiarios datosDiarios = new Datosdiarios();
+		Estaciones estacion = null;
+		String nombreEstacion = "";
 		StringBuilder resultado = new StringBuilder();
 		URL url = new URL(urlParaVisitar);
 
@@ -315,18 +312,19 @@ public class lecturaDatos {
 			} else if (linea.contains("name")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-				for (Estaciones estacion : listaEstaciones) {
-					if (estacion.getNombre().equals(linea)) {
-						datosHorarios.setEstaciones(estacion);
+				nombreEstacion = linea;
 
-						continue;
+			} else if (linea.contains("url") & linea.contains("datos_indice")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+				String urlIndice = linea;
+				for (Estaciones estacionAux : listaEstaciones) {
+					if (estacionAux.getNombre().equals(nombreEstacion.replace("_", " "))) {
+						estacion = estacionAux;
+						break;
 					}
 				}
-
-			} else if (linea.contains("url") & linea.contains("datos_horarios")) {
-				linea = linea.split(" \"")[1];
-				linea = linea.split("\"")[0];
-				String urlHorario = linea;
+				peticionHttpGetDatosIndice(urlIndice, estacion);
 
 			}
 
@@ -338,15 +336,14 @@ public class lecturaDatos {
 		return resultado.toString();
 	}
 
-	public static String peticionHttpGetDatosHorarios(String urlParaVisitar) throws Exception {
+	public static String peticionHttpGetDatosIndice(String urlParaVisitar, Estaciones estacion) throws Exception {
 
-		ArrayList<Datoshorarios> listaDatosHorarios = new ArrayList<>();
-		ArrayList<Datosdiarios> listaDatosDiarios = new ArrayList<>();
+		ArrayList<Datos> listaDatos = new ArrayList<>();
 
-		int codEstacion = 0;
 		BaseDatos bd = new BaseDatos();
-		Datoshorarios datosHorarios = new Datoshorarios();
-		DatosdiariosId datosHorariosId = new DatosdiariosId();
+		Datos dato = new Datos();
+		dato.setEstaciones(estacion);
+		DatosId datoId = null;
 		StringBuilder resultado = new StringBuilder();
 		URL url = new URL(urlParaVisitar);
 
@@ -362,50 +359,89 @@ public class lecturaDatos {
 				linea = linea.split(" ")[0];
 
 			} else if (linea.contains("Date")) {
-				datosHorarios = new Datoshorarios();
+				datoId = new DatosId();
+				datoId.setCodEst(estacion.getCodEst());
+
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-				int dia = Integer.parseInt(linea.split("/")[0]);
-				int mes = Integer.parseInt(linea.split("/")[1].split("/")[0]);
-				int anio = Integer.parseInt(linea.split("/")[1].split("/")[1]);
-				Date fecha = new Date(dia,mes,anio);
-				datosHorariosId.setFecha(fecha);
+				SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+				Date date = formatter1.parse(linea);
+				datoId.setFecha(date);
 
 			} else if (linea.contains("Hour")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
+				SimpleDateFormat formatter1 = new SimpleDateFormat("hh:mm");
+				Long millis = formatter1.parse(linea).getTime();
+				Time hora = new Time(millis);
+				datoId.setHora(hora);
+				dato.setId(datoId);
 
 			} else if (linea.contains("COmgm3")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
+				dato.setComgm3(Double.parseDouble(linea.replace(",", ".")));
 
 			} else if (linea.contains("CO8hmgm3")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
+				dato.setCo8hmgm3(Double.parseDouble(linea.replace(",", ".")));
 
 			} else if (linea.contains("NOgm3")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-			} else if (linea.contains("NO2gm3")) {
+				dato.setNogm3(Double.parseDouble(linea.replace(",", ".")));
+			} else if (linea.contains("NO2\"")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
+				dato.setNo2(Double.parseDouble(linea.replace(",", ".")));
 
+			} else if (linea.contains("NO2ICA")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+				dato.setNo2ica(linea);
 			} else if (linea.contains("NOXgm3")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-			} else if (linea.contains("PM10gm3")) {
+				dato.setNoxgm3(Double.parseDouble(linea.replace(",", ".")));
+			} else if (linea.contains("PM10\"")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-			} else if (linea.contains("PM25gm3")) {
+				dato.setPm10(Double.parseDouble(linea.replace(",", ".")));
+			} else if (linea.contains("PM10ICA")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-			} else if (linea.contains("SO2gm3")) {
+				dato.setPm10ica(linea);
+			} else if (linea.contains("PM25\"")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
+				dato.setPm25(Double.parseDouble(linea.replace(",", ".")));
+			} else if (linea.contains("PM25ICA")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+				dato.setPm25ica(linea);
+			} else if (linea.contains("SO2\"")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+				dato.setSo2(Double.parseDouble(linea.replace(",", ".")));
+			} else if (linea.contains("SO2ICA")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+				dato.setSo2ica(linea);
 
+			} else if (linea.contains("ICAEstacion")) {
+				linea = linea.split(" \"")[2];
+				linea = linea.split("\"")[0];
+				dato.setIcaestacion(linea);
+
+				listaDatos.add(dato);
 			}
+
 			resultado.append(linea + "\n");
 		}
+
+		bd.insertDatoss(listaDatos);
+		EscribirXml xml = new EscribirXml();
 
 		rd.close();
 

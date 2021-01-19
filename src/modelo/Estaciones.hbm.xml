@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 18 ene. 2021 15:51:17 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 19 ene. 2021 11:02:31 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Estaciones" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="estaciones">
         <id name="codEst" type="int">
@@ -24,17 +24,11 @@
         <property generated="never" lazy="false" name="longitud" optimistic-lock="true" type="string" unique="false">
             <column length="30" name="Longitud"/>
         </property>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datoshorarioses" optimistic-lock="true" sort="unsorted" table="datoshorarios">
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datoses" optimistic-lock="true" sort="unsorted" table="datos">
             <key on-delete="noaction">
                 <column name="CodEst" not-null="true"/>
             </key>
-            <one-to-many class="modelo.Datoshorarios" embed-xml="true" not-found="exception"/>
-        </set>
-        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="datosdiarioses" optimistic-lock="true" sort="unsorted" table="datosdiarios">
-            <key on-delete="noaction">
-                <column name="CodEst" not-null="true"/>
-            </key>
-            <one-to-many class="modelo.Datosdiarios" embed-xml="true" not-found="exception"/>
+            <one-to-many class="modelo.Datos" embed-xml="true" not-found="exception"/>
         </set>
     </class>
 </hibernate-mapping>

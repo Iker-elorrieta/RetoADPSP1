@@ -9,9 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-
-import modelo.Datosdiarios;
-import modelo.Datoshorarios;
+import modelo.Datos;
 import modelo.Espacios;
 import modelo.Estaciones;
 import modelo.Hashes;
@@ -26,35 +24,16 @@ public class BaseDatos {
 	Session session = sesion.openSession();
 	Transaction tx = session.beginTransaction();
 
-	public boolean insertDatosHorarios(Datoshorarios datos) {
+	public boolean insertDatoss(ArrayList<Datos> datos) {
 
 		try {
 
 			SessionFactory sesion = HibernateUtil.getSessionFactory();
 			Session session = sesion.openSession();
 			Transaction tx = session.beginTransaction();
-
-			session.save(datos);
-
-			tx.commit();
-			session.close();
-
-			return true;
-		} catch (Exception e) {
-			// TODO: handle exception
-			return false;
-		}
-	}
-
-	public boolean insertDatosDiarios(Datosdiarios datos) {
-
-		try {
-
-			SessionFactory sesion = HibernateUtil.getSessionFactory();
-			Session session = sesion.openSession();
-			Transaction tx = session.beginTransaction();
-
-			session.save(datos);
+			for (Datos dato : datos) {
+				session.save(dato);
+			}
 
 			tx.commit();
 			session.close();
@@ -267,11 +246,11 @@ public class BaseDatos {
 			String hql = " from Municipios where CodProv = " + codigosProv.get(i) + " and CodMuni = "
 					+ codigosMuni.get(i) + "";
 			Query q = session.createQuery(hql);
-			List<Municipios> emple = q.list();
+			List<Municipios> muni = q.list();
 
-			for (int x = 0; x < emple.size(); x++) {
+			for (int x = 0; x < muni.size(); x++) {
 
-				municipio = emple.get(i);
+				municipio = muni.get(x);
 				municipios.add(municipio);
 			}
 

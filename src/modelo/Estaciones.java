@@ -1,5 +1,5 @@
 package modelo;
-// Generated 18 ene. 2021 15:51:17 by Hibernate Tools 5.4.21.Final
+// Generated 19 ene. 2021 11:02:31 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,8 +16,7 @@ public class Estaciones implements java.io.Serializable {
 	private String direccion;
 	private String latitud;
 	private String longitud;
-	private Set datoshorarioses = new HashSet(0);
-	private Set datosdiarioses = new HashSet(0);
+	private Set datoses = new HashSet(0);
 
 	public Estaciones() {
 	}
@@ -27,7 +26,7 @@ public class Estaciones implements java.io.Serializable {
 	}
 
 	public Estaciones(int codEst, String nombre, String provincia, String municipio, String direccion, String latitud,
-			String longitud, Set datoshorarioses, Set datosdiarioses) {
+			String longitud, Set datoses) {
 		this.codEst = codEst;
 		this.nombre = nombre;
 		this.provincia = provincia;
@@ -35,8 +34,7 @@ public class Estaciones implements java.io.Serializable {
 		this.direccion = direccion;
 		this.latitud = latitud;
 		this.longitud = longitud;
-		this.datoshorarioses = datoshorarioses;
-		this.datosdiarioses = datosdiarioses;
+		this.datoses = datoses;
 	}
 
 	public int getCodEst() {
@@ -95,20 +93,12 @@ public class Estaciones implements java.io.Serializable {
 		this.longitud = longitud;
 	}
 
-	public Set getDatoshorarioses() {
-		return this.datoshorarioses;
+	public Set getDatoses() {
+		return this.datoses;
 	}
 
-	public void setDatoshorarioses(Set datoshorarioses) {
-		this.datoshorarioses = datoshorarioses;
-	}
-
-	public Set getDatosdiarioses() {
-		return this.datosdiarioses;
-	}
-
-	public void setDatosdiarioses(Set datosdiarioses) {
-		this.datosdiarioses = datosdiarioses;
+	public void setDatoses(Set datoses) {
+		this.datoses = datoses;
 	}
 
 }

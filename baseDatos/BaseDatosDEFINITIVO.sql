@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-01-2021 a las 11:03:27
+-- Tiempo de generación: 19-01-2021 a las 11:12:35
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.0
 
@@ -24,43 +24,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `datosdiarios`
+-- Estructura de tabla para la tabla `datos`
 --
 
-CREATE TABLE `datosdiarios` (
+CREATE TABLE `datos` (
   `CodEst` int(6) NOT NULL,
   `Fecha` date NOT NULL,
-  `Hora` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
-  `NOgm3` int(11) DEFAULT NULL,
-  `NO2gm3` int(11) DEFAULT NULL,
-  `NOXgm3` int(11) DEFAULT NULL,
-  `PM10gm3` int(11) DEFAULT NULL,
-  `direccion viento` varchar(50) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `H` int(11) DEFAULT NULL,
-  `Precipitaciones` int(11) DEFAULT NULL,
-  `Temperatura` int(11) DEFAULT NULL,
-  `Velocidad Viento` int(11) DEFAULT NULL
+  `Hora` date NOT NULL,
+  `COmgm3` double DEFAULT NULL,
+  `CO8hmgm3` double DEFAULT NULL,
+  `NOgm3` double DEFAULT NULL,
+  `NO2` double DEFAULT NULL,
+  `NO2ICA` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `NOXgm3` double DEFAULT NULL,
+  `PM10` double DEFAULT NULL,
+  `PM10ICA` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `PM25` double DEFAULT NULL,
+  `PM25ICA` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `SO2` double DEFAULT NULL,
+  `SO2ICA` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `ICAEstacion` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `datoshorarios`
---
-
-CREATE TABLE `datoshorarios` (
-  `Fecha` date NOT NULL,
-  `Hora` time NOT NULL,
-  `COmgm3` double NULL,
-  `CO8hmgm3` double NULL,
-  `NOgm3` double NULL,
-  `NO2gm3` double NULL,
-  `NOXgm3` double NULL,
-  `PM10gm3` double NULL,
-  `PM25gm3` double NULL,
-  `SO2gm3` double NULL,
-  `CodEst` int(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -129,12 +113,6 @@ CREATE TABLE `provincias` (
   `Nombre` varchar(100) COLLATE utf8_unicode_520_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci;
 
---
--- Volcado de datos para la tabla `provincias`
---
-
-
-
 -- --------------------------------------------------------
 
 --
@@ -163,16 +141,9 @@ CREATE TABLE `usuarios` (
 --
 
 --
--- Indices de la tabla `datosdiarios`
+-- Indices de la tabla `datos`
 --
-ALTER TABLE `datosdiarios`
-  ADD PRIMARY KEY (`Fecha`,`Hora`,`CodEst`) USING BTREE,
-  ADD KEY `CodEst` (`CodEst`);
-
---
--- Indices de la tabla `datoshorarios`
---
-ALTER TABLE `datoshorarios`
+ALTER TABLE `datos`
   ADD PRIMARY KEY (`Fecha`,`Hora`,`CodEst`) USING BTREE,
   ADD KEY `CodEst` (`CodEst`);
 
@@ -242,16 +213,10 @@ ALTER TABLE `usuarios`
 --
 
 --
--- Filtros para la tabla `datosdiarios`
+-- Filtros para la tabla `datos`
 --
-ALTER TABLE `datosdiarios`
-  ADD CONSTRAINT `datosdiarios_ibfk_1` FOREIGN KEY (`CodEst`) REFERENCES `estaciones` (`CodEst`) ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `datoshorarios`
---
-ALTER TABLE `datoshorarios`
-  ADD CONSTRAINT `datoshorarios_ibfk_1` FOREIGN KEY (`CodEst`) REFERENCES `estaciones` (`CodEst`) ON UPDATE CASCADE;
+ALTER TABLE `datos`
+  ADD CONSTRAINT `datos_ibfk_1` FOREIGN KEY (`CodEst`) REFERENCES `estaciones` (`CodEst`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `municipios`
