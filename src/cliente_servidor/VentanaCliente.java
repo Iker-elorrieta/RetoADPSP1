@@ -7,10 +7,14 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import dao.BaseDatos;
 import json.LecturaDatos;
 import modelo.Espacios;
 import modelo.Municipios;
+import modelo.Provincias;
+import modelo.Ubicaciones;
 import modelo.Usuarios;
+import java.awt.Label;
 
 public class VentanaCliente extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -29,7 +33,16 @@ public class VentanaCliente extends JFrame implements ActionListener {
 	private JButton btnTopRankingEspacios;
 	private JButton btnTopMunicipios;
 	private JButton btnFavoritos;
-	private JComboBox comboBoxFiltro;
+	private JComboBox<String> comboBoxProvincias;
+	private Label label_1;
+	private JComboBox comboBoxMunicipios;
+	private Label label;
+	private Provincias provinciaSeleccionada;
+	private Ubicaciones ubicacionesSeleccionadas;
+	BaseDatos bd = new BaseDatos();
+	private ArrayList<Municipios> listaMunicipios;
+	private ArrayList<Espacios> listaEspacios;
+	private ArrayList<Ubicaciones> listaUbicaciones;
 
 	// constructor
 	public VentanaCliente(Socket s, Usuarios usuario) throws IOException {
@@ -50,7 +63,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 
 		botonEnviar.setBounds(557, 10, 100, 30);
 		getContentPane().add(botonEnviar);
-		botonSalir.setBounds(612, 456, 100, 30);
+		botonSalir.setBounds(612, 456, 208, 69);
 		getContentPane().add(botonSalir);
 		botonEnviar.addActionListener(this);
 		botonSalir.addActionListener(this);
@@ -65,19 +78,11 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		cliente = new Cliente(socket, textarea1, mensaje, botonEnviar);
 		btnMunicipios = new JButton("Municipios");
 		btnMunicipios.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
-
-				LecturaDatos ld = new LecturaDatos();
-
-				ArrayList<Municipios> listaMunicipios = LecturaDatos.listaMunicipios;
-				for (Municipios municipio : listaMunicipios) {
-					String texto = municipio.getNombre() +" | " + municipio.getDescripcion()
-							+ municipio.getProvincias().getNombre();
-
-					cliente.enviarMensaje(texto + "\n");
-
-				}
-
+				comboBoxMunicipios.setEnabled(false);
+				listaMunicipios = LecturaDatos.listaMunicipios;
+				mostrarMunicipios(listaMunicipios);
 			}
 		});
 		btnMunicipios.setBounds(468, 62, 208, 54);
@@ -87,16 +92,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		btnEspaciosNaturales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				LecturaDatos ld = new LecturaDatos();
-
-				ArrayList<Espacios> listaEspacios = LecturaDatos.listaEspacios;
-				for (Espacios espacio : listaEspacios) {
-					String texto = espacio.getNombre() +" | " +espacio.getDescripcion();
-							
-
-					cliente.enviarMensaje(texto + "\n");
-
-				}
+				listaEspacios = LecturaDatos.listaEspacios;
 
 			}
 		});
@@ -115,14 +111,105 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		btnFavoritos.setBounds(468, 322, 208, 54);
 		getContentPane().add(btnFavoritos);
 
-		comboBoxFiltro = new JComboBox();
-		comboBoxFiltro.setBounds(432, 14, 30, 22);
-		getContentPane().add(comboBoxFiltro);
+		comboBoxProvincias = new JComboBox<String>();
+
+		comboBoxProvincias.setBounds(729, 62, 146, 22);
+		getContentPane().add(comboBoxProvincias);
+		for (Provincias provincia : LecturaDatos.listProvincias) {
+			comboBoxProvincias.addItem(provincia.getNombre());
+		}
+		comboBoxProvincias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				for (Provincias provincia : LecturaDatos.listProvincias) {
+					if (provincia.getNombre()
+							.equals(comboBoxProvincias.getItemAt(comboBoxProvincias.getSelectedIndex()))) {
+						provinciaSeleccionada = provincia;
+
+						ArrayList<Municipios> municipiosSeleccionados = new ArrayList<>();
+						for (Municipios municipio : LecturaDatos.listaMunicipios) {
+
+							if (municipio.getProvincias().getCodProv() == provinciaSeleccionada.getCodProv()) {
+
+								municipiosSeleccionados.add(municipio);
+							}
+						}
+						mostrarMunicipios(municipiosSeleccionados);
+					}
+
+				}
+
+			}
+		});
+
+		label = new Label("Seleccionar Provincia:");
+		label.setBounds(729, 62, 115, 22);
+		getContentPane().add(label);
+
+		label_1 = new Label("Seleccionar Municipio");
+		label_1.setBounds(729, 127, 115, 22);
+		getContentPane().add(label_1);
+
+		comboBoxMunicipios = new JComboBox();
+		comboBoxMunicipios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				ArrayList<Espacios> espaciosSeleccionados = new ArrayList<>();
+				listaUbicaciones = LecturaDatos.listaUbicaciones;
+				listaEspacios = LecturaDatos.listaEspacios;
+				ArrayList<Municipios> municipiosSeleccionados = new ArrayList<>();
+				for (Municipios municipio : LecturaDatos.listaMunicipios) {
+
+					if (municipio.getProvincias().getCodProv() == provinciaSeleccionada.getCodProv()) {
+
+						for (Ubicaciones ubicacion : listaUbicaciones) {
+							if (ubicacion.getMunicipios().getCodMuni() == municipio.getCodMuni()) {
+								// ubicacionesSeleccionadas.add(ubicacion);
+								for (Espacios espacio : listaEspacios) {
+									if (espacio.getCodEspacio() == ubicacion.getId().getCodEspacio()) {
+										espaciosSeleccionados.add(espacio);
+									}
+								}
+							}
+							municipiosSeleccionados.add(municipio);
+						}
+					}
+
+				}
+				
+
+				mostrarEspacios(espaciosSeleccionados);
+			}
+		});
+		comboBoxMunicipios.setBounds(729, 127, 146, 22);
+		getContentPane().add(comboBoxMunicipios);
+
 		cliente.enviarMensaje("> " + usuario + " se ha conectado\n");
 
 	}// fin constructor
 
-	// accion cuando pulsamos botones
+	public boolean mostrarMunicipios(ArrayList<Municipios> municipios) {
+		textarea1.setText("");
+		for (Municipios municipio : municipios) {
+			String texto = municipio.getNombre() + " | " + municipio.getDescripcion()
+					+ municipio.getProvincias().getNombre();
+
+			cliente.enviarMensaje(texto + "\n");
+
+		}
+		return true;
+	}
+
+	public boolean mostrarEspacios(ArrayList<Espacios> espacios) {
+		textarea1.setText("");
+		for (Espacios espacio : espacios) {
+			String texto = espacio.getNombre() + " | " + espacio.getDescripcion();
+
+			cliente.enviarMensaje(texto + "\n");
+
+		}
+		return true;
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == botonEnviar) { // SE PULSA EL ENVIAR
 

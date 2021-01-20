@@ -175,9 +175,7 @@ public class VentanaLogin extends JFrame {
 					VentanaCliente cl;
 					try {
 						cl = new VentanaCliente(s,usuario);
-						cl.setBounds(0, 0, 540, 400);
-						LecturaDatos.main(null);
-						
+						cl.setBounds(0, 0, 540, 400);						
 						cl.setVisible(true);
 						setVisible(false);
 					} catch (IOException e1) {

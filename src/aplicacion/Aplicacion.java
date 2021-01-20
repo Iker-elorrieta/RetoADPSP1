@@ -1,5 +1,7 @@
 package aplicacion;
 
+
+
 import cliente_servidor.VentanaServidor;
 import json.LecturaDatos;
 
@@ -10,5 +12,4 @@ public class Aplicacion {
 		VentanaServidor.main(null);
 
 	}
-
 }
