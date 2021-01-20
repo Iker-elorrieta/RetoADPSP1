@@ -11,6 +11,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import json.LecturaDatos;
+
 
 public class VentanaServidor extends JFrame implements ActionListener {
 	/**
@@ -29,13 +31,15 @@ public class VentanaServidor extends JFrame implements ActionListener {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
+		LecturaDatos.main(null);
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					VentanaServidor frame = new VentanaServidor();
 					frame.setBounds(0, 0, 500, 450);
 					frame.setVisible(true);
+					VentanaLogin.main(null);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
