@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import json.LecturaDatos;
+import modelo.Espacios;
 import modelo.Municipios;
 import modelo.Usuarios;
 
@@ -33,7 +34,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 	// constructor
 	public VentanaCliente(Socket s, Usuarios usuario) throws IOException {
 		super(" BIENVENIDO " + usuario.getNombre());
-		
+
 		getContentPane().setLayout(null);
 
 		mensaje.setBounds(10, 10, 400, 30);
@@ -65,16 +66,16 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		btnMunicipios = new JButton("Municipios");
 		btnMunicipios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-System.out.println("boton municipios");
 
 				LecturaDatos ld = new LecturaDatos();
-				
+
 				ArrayList<Municipios> listaMunicipios = LecturaDatos.listaMunicipios;
 				for (Municipios municipio : listaMunicipios) {
-					String texto = municipio.getNombre()+municipio.getDescripcion()+municipio.getProvincias().getNombre();
+					String texto = municipio.getNombre() +" | " + municipio.getDescripcion()
+							+ municipio.getProvincias().getNombre();
 
 					cliente.enviarMensaje(texto + "\n");
-					
+
 				}
 
 			}
@@ -85,6 +86,18 @@ System.out.println("boton municipios");
 		btnEspaciosNaturales = new JButton("Espacios Naturales");
 		btnEspaciosNaturales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
+				LecturaDatos ld = new LecturaDatos();
+
+				ArrayList<Espacios> listaEspacios = LecturaDatos.listaEspacios;
+				for (Espacios espacio : listaEspacios) {
+					String texto = espacio.getNombre() +" | " +espacio.getDescripcion();
+							
+
+					cliente.enviarMensaje(texto + "\n");
+
+				}
+
 			}
 		});
 		btnEspaciosNaturales.setBounds(468, 192, 208, 54);

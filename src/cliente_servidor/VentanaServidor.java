@@ -31,7 +31,7 @@ public class VentanaServidor extends JFrame implements ActionListener {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		LecturaDatos.main(null);
+		
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
