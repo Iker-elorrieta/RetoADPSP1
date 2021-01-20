@@ -193,6 +193,20 @@ public class BaseDatos {
 			return false;
 		}
 	}
+	
+	public Usuarios obtenerUsuario(String nombre, String contrasena) {
+		Usuarios usuario = null;
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+
+		String hql = " from Usuarios where Nombre = '" + nombre + "' and Password = '"+contrasena+"'";
+
+		Query q = session.createQuery(hql);
+		usuario = (Usuarios) q.uniqueResult();
+
+		session.close();
+		return usuario;
+	}
 
 	public Provincias obtenerProvincia(int cod) {
 		Provincias provincia = null;

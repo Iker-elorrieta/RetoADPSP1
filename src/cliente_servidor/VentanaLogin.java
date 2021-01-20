@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import dao.BaseDatos;
+import json.LecturaDatos;
 import modelo.Usuarios;
 
 import javax.swing.JTextField;
@@ -32,26 +33,24 @@ public class VentanaLogin extends JFrame {
 	private JTextField textField_RegistroNombre;
 	private JTextField textField_RegistroContra;
 	private JTextField textField_RegistroRepetirContra;
-static boolean b = false;
 	private BaseDatos bd = new BaseDatos();
 	Usuarios usuario;
 	/**
 	 * Launch the application.
 	 * @return 
 	 */
-	public static boolean main(String[] args) {
+	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					VentanaLogin frame = new VentanaLogin();
 					frame.setVisible(true);
 				} catch (Exception e) {
-					b = false;
 					e.printStackTrace();
 				}
 			}
 		});
-		return b;
+		
 	}
 
 	/**
@@ -85,28 +84,32 @@ static boolean b = false;
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lblLoginError.setVisible(false);
-//				if(!textField_NombreUsuario.getText().equals(""))
-//				{
-//					
-//					Socket s = null;
-//					VentanaCliente cl;
-//					try {
-//						cl = new VentanaCliente(s,textField_NombreUsuario.getText());
-//						cl.setBounds(0, 0, 540, 400);
-//						cl.setVisible(true);
-//						setVisible(false);
-//					} catch (IOException e1) {
-//						// TODO Auto-generated catch block
-//						lblLoginError.setVisible(true);
-//						lblLoginError.setText("Error al conectarse");
-//					}
-//				
-//				}
-//				else
-//				{
-//					lblLoginError.setVisible(true);
-//					lblLoginError.setText("Debe introducir un nick");
-//				}
+				BaseDatos bd = new BaseDatos();
+				Usuarios usuario = bd.obtenerUsuario(textField_NombreUsuario.getText(), textField_ContraUsuario.getText());
+				
+				if(!textField_NombreUsuario.getText().equals("") && usuario!=null) 
+				{
+					
+					
+					VentanaCliente cl;
+					try {
+						Socket s = new Socket("localhost", 44444);
+						cl = new VentanaCliente(s,usuario);
+						cl.setBounds(0, 0, 540, 400);
+						cl.setVisible(true);
+						setVisible(false);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						lblLoginError.setVisible(true);
+						lblLoginError.setText("Error al conectarse");
+					}
+				
+				}
+				else
+				{
+					lblLoginError.setVisible(true);
+					lblLoginError.setText("Debe introducir un nick");
+				}
 					
 			}
 		});
@@ -160,37 +163,38 @@ static boolean b = false;
 		JButton btnRegistrarse = new JButton("Registrarse");
 		btnRegistrarse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				
-//				llblRegistro.setVisible(false);
-//				if (textField_RegistroContra.getText().equals(textField_RegistroRepetirContra.getText()) && !textField_RegistroNombre.getText().equals("")){
-//					usuario = new Usuarios(textField_RegistroNombre.getText(),textField_RegistroContra.getText());
-//		}
-//				
-//				
-//				if(bd.insertUsuarios(usuario)){
-//				
-//					
-//					Socket s = null;
-//					VentanaCliente cl;
-//					try {
-//						cl = new VentanaCliente(s,textField_NombreUsuario.getText());
-//						cl.setBounds(0, 0, 540, 400);
-//						cl.setVisible(true);
-//						setVisible(false);
-//					} catch (IOException e1) {
-//						// TODO Auto-generated catch block
-//						lblLoginError.setVisible(true);
-//						lblLoginError.setText("Error al conectarse");
-//					}
-//				
-//				}
-//				else
-//				{
-//					lblLoginError.setVisible(true);
-//					lblLoginError.setText("Debe introducir un nick");
-//				}
-//				
-//				
+				
+				llblRegistro.setVisible(false);
+				if (textField_RegistroContra.getText().equals(textField_RegistroRepetirContra.getText()) && !textField_RegistroNombre.getText().equals("")){
+					usuario = new Usuarios(textField_RegistroNombre.getText(),textField_RegistroContra.getText());		}
+				
+				
+				if(bd.insertUsuarios(usuario)){
+				
+					
+					Socket s = null;
+					VentanaCliente cl;
+					try {
+						cl = new VentanaCliente(s,usuario);
+						cl.setBounds(0, 0, 540, 400);
+						LecturaDatos.main(null);
+						
+						cl.setVisible(true);
+						setVisible(false);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						lblLoginError.setVisible(true);
+						lblLoginError.setText("Error al conectarse");
+					}
+				
+				}
+				else
+				{
+					lblLoginError.setVisible(true);
+					lblLoginError.setText("Debe introducir un nick");
+				}
+				
+				
 			}
 		});
 		btnRegistrarse.setBounds(278, 263, 102, 21);

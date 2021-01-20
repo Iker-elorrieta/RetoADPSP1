@@ -23,9 +23,13 @@ import modelo.UbicacionesId;
 import xml.EscribirXml;
 
 public class LecturaDatos {
-	static ArrayList<Estaciones> listaEstaciones = new ArrayList<>();
-
-	public static boolean main(String[] args) {
+	public static ArrayList<Estaciones> listaEstaciones = new ArrayList<>();
+	public static ArrayList<Municipios> listaMunicipios = new ArrayList<>();
+	public static ArrayList<Provincias> listProvincias = new ArrayList<>();
+	public static ArrayList<Espacios> listaEspacios = new ArrayList<>();
+	public static ArrayList<Ubicaciones> listaUbicaciones = new ArrayList<>();
+	public static ArrayList<Datos> listaDatos = new ArrayList<>();
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String urlMunicipios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/pueblos_euskadi_turismo/opendata/herriak.json";
 		String urlEspacios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/playas_de_euskadi/opendata/espacios-naturales.json";
@@ -46,16 +50,14 @@ public class LecturaDatos {
 			// System.out.println(respuesta);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			
 
 		}
-		return true;
 	}
 
 	public static String peticionHttpGetMunicipios(String urlParaVisitar) throws Exception {
 
-		ArrayList<Municipios> listaMunicipios = new ArrayList<>();
-		ArrayList<Provincias> listProvincias = new ArrayList<>();
+		
 		String nombreProv = "";
 		String nombreMuni = "";
 		int codMuni = 0;
@@ -141,12 +143,10 @@ public class LecturaDatos {
 
 	public static String peticionHttpGetEspacios(String urlParaVisitar) throws Exception {
 
-		ArrayList<Espacios> listaEspacios = new ArrayList<>();
-		ArrayList<Ubicaciones> listaUbicaciones = new ArrayList<>();
+		
 		ArrayList<Integer> codigosMuniFiltrado = new ArrayList<>();
 		ArrayList<Integer> codigosProvFiltrado = new ArrayList<>();
 		String[] codigosMuni = null;
-		int codMuni = 0;
 		int codEspacio = 0;
 		BaseDatos bd = new BaseDatos();
 		Espacios espacio = new Espacios();
@@ -340,7 +340,7 @@ public class LecturaDatos {
 
 	public static String peticionHttpGetDatosIndice(String urlParaVisitar, Estaciones estacion) throws Exception {
 
-		ArrayList<Datos> listaDatos = new ArrayList<>();
+		
 
 		BaseDatos bd = new BaseDatos();
 		Datos dato = new Datos();

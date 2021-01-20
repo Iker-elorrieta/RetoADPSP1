@@ -111,8 +111,8 @@ public class Pruebas {
 		LecturaDatos.main(args);
 		BaseDatos bd = new BaseDatos();
 		Municipios municipioPrueba = bd.obtenerMunicipio(1, 1);
-		boolean b = LecturaDatos.main(args);
-		assertEquals(true, b);
+		//boolean b = LecturaDatos.main(args);
+		//assertEquals(true, b);
 	}
 
 	
@@ -153,20 +153,20 @@ public class Pruebas {
 //		
 //	}
 
-	@Test
-	public void testServidorCliente() {
-		boolean b = false;
-		boolean a = false;
-		VentanaServidor servidor = new VentanaServidor();
-		VentanaLogin vCliente = new VentanaLogin();
-		String[] args = null;
-		b = VentanaLogin.main(args);
-		Cliente cliente = new Cliente();
-		Socket s = new Socket();
-	
-		
-		assertEquals(true, b);
-
-	}
+//	@Test
+//	public void testServidorCliente() {
+//		boolean b = false;
+//		boolean a = false;
+//		VentanaServidor servidor = new VentanaServidor();
+//		VentanaLogin vCliente = new VentanaLogin();
+//		String[] args = null;
+//		b = VentanaLogin.main(args);
+//		Cliente cliente = new Cliente();
+//		Socket s = new Socket();
+//	
+//		
+//		assertEquals(true, b);
+//
+//	}
 
 }

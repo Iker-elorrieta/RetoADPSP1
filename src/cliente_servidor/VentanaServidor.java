@@ -25,11 +25,10 @@ public class VentanaServidor extends JFrame implements ActionListener {
 	JButton botonEnviar = new JButton("Enviar");
 	JButton botonSalir = new JButton("Salir");
 	Servidor s = null;
-static boolean b = true;
 	/**
 	 * Launch the application.
 	 */
-	public static boolean main(String[] args) {
+	public static void main(String[] args) {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -39,13 +38,11 @@ static boolean b = true;
 					frame.setVisible(true);
 					
 				} catch (Exception e) {
-					b = false;
 					e.printStackTrace();
 				
 				}
 			}
 		});
-		return  b;
 	}
 
 	/**
