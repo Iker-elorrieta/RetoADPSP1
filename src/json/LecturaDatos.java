@@ -7,6 +7,9 @@ import java.net.URL;
 import java.sql.Time;
 import java.util.Date;
 
+import javax.print.attribute.DateTimeSyntax;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -373,10 +376,9 @@ public class LecturaDatos {
 			} else if (linea.contains("Hour")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-				SimpleDateFormat formatter1 = new SimpleDateFormat("hh:mm");
-				Long millis = formatter1.parse(linea).getTime();
-				Time hora = new Time(millis);
-				datoId.setHora(hora);
+				SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");	
+				 Date d =  dateFormat.parse(linea);
+				datoId.setHora(d);
 				dato.setId(datoId);
 
 			} else if (linea.contains("COmgm3")) {

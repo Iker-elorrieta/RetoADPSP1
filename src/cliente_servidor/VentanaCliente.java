@@ -35,7 +35,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 	private JButton btnFavoritos;
 	private JComboBox<String> comboBoxProvincias;
 	private Label label_1;
-	private JComboBox comboBoxMunicipios;
+	private JComboBox<String> comboBoxMunicipios;
 	private Label label;
 	private Provincias provinciaSeleccionada;
 	private Ubicaciones ubicacionesSeleccionadas;
@@ -43,6 +43,8 @@ public class VentanaCliente extends JFrame implements ActionListener {
 	private ArrayList<Municipios> listaMunicipios;
 	private ArrayList<Espacios> listaEspacios;
 	private ArrayList<Ubicaciones> listaUbicaciones;
+	private boolean municipiosPulsado = false;
+	private boolean espaciosPulsado = false;
 
 	// constructor
 	public VentanaCliente(Socket s, Usuarios usuario) throws IOException {
@@ -76,26 +78,35 @@ public class VentanaCliente extends JFrame implements ActionListener {
 
 		socket = new Socket(cliente.getHost(), cliente.getPuerto());
 		cliente = new Cliente(socket, textarea1, mensaje, botonEnviar);
+
 		btnMunicipios = new JButton("Municipios");
 		btnMunicipios.addActionListener(new ActionListener() {
-
+// PULSAMOS BOTON MUNICIPIOS
 			public void actionPerformed(ActionEvent arg0) {
-				comboBoxMunicipios.setEnabled(false);
+				municipiosPulsado = true;
+				espaciosPulsado = false;
+				
 				listaMunicipios = LecturaDatos.listaMunicipios;
 				mostrarMunicipios(listaMunicipios);
 			}
 		});
+///////////////////////////////////////////
 		btnMunicipios.setBounds(468, 62, 208, 54);
 		getContentPane().add(btnMunicipios);
 
 		btnEspaciosNaturales = new JButton("Espacios Naturales");
 		btnEspaciosNaturales.addActionListener(new ActionListener() {
+// PULSAMOS EN BOTON ESPACIOS NATURALES
 			public void actionPerformed(ActionEvent arg0) {
 
 				listaEspacios = LecturaDatos.listaEspacios;
-
+				espaciosPulsado = true;
+				municipiosPulsado = false;
+				comboBoxMunicipios.setVisible(true);
+				mostrarEspacios(listaEspacios);
 			}
 		});
+///////////////////////////////////////////////
 		btnEspaciosNaturales.setBounds(468, 192, 208, 54);
 		getContentPane().add(btnEspaciosNaturales);
 
@@ -112,14 +123,32 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		getContentPane().add(btnFavoritos);
 
 		comboBoxProvincias = new JComboBox<String>();
-
 		comboBoxProvincias.setBounds(729, 62, 146, 22);
 		getContentPane().add(comboBoxProvincias);
+		
+		comboBoxMunicipios = new JComboBox<String>();
+		comboBoxMunicipios.setBounds(729, 127, 146, 22);
+		getContentPane().add(comboBoxMunicipios);
+
+		label = new Label("Seleccionar Provincia:");
+		label.setBounds(729, 62, 115, 22);
+		getContentPane().add(label);
+
+		label_1 = new Label("Seleccionar Municipio");
+		label_1.setBounds(729, 127, 115, 22);
+		getContentPane().add(label_1);
+
+		
 		for (Provincias provincia : LecturaDatos.listProvincias) {
 			comboBoxProvincias.addItem(provincia.getNombre());
 		}
+
+//SELECCIONAMOS ALGO EN EL COMBOBOX PROVINCIAS
 		comboBoxProvincias.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
+				comboBoxMunicipios.removeAllItems();
+
 				for (Provincias provincia : LecturaDatos.listProvincias) {
 					if (provincia.getNombre()
 							.equals(comboBoxProvincias.getItemAt(comboBoxProvincias.getSelectedIndex()))) {
@@ -131,25 +160,19 @@ public class VentanaCliente extends JFrame implements ActionListener {
 							if (municipio.getProvincias().getCodProv() == provinciaSeleccionada.getCodProv()) {
 
 								municipiosSeleccionados.add(municipio);
+								comboBoxMunicipios.addItem(municipio.getNombre());
+								
 							}
 						}
 						mostrarMunicipios(municipiosSeleccionados);
 					}
-
 				}
-
+				comboBoxMunicipios.setVisible(true);
 			}
 		});
-
-		label = new Label("Seleccionar Provincia:");
-		label.setBounds(729, 62, 115, 22);
-		getContentPane().add(label);
-
-		label_1 = new Label("Seleccionar Municipio");
-		label_1.setBounds(729, 127, 115, 22);
-		getContentPane().add(label_1);
-
-		comboBoxMunicipios = new JComboBox();
+////////////////////////////////////
+// SELECCIONAMOS ALGO EN EL COMBOBOX MUNICIPIOS
+		
 		comboBoxMunicipios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -173,15 +196,12 @@ public class VentanaCliente extends JFrame implements ActionListener {
 							municipiosSeleccionados.add(municipio);
 						}
 					}
-
 				}
-				
-
 				mostrarEspacios(espaciosSeleccionados);
 			}
 		});
-		comboBoxMunicipios.setBounds(729, 127, 146, 22);
-		getContentPane().add(comboBoxMunicipios);
+////////////////////////////////
+		
 
 		cliente.enviarMensaje("> " + usuario + " se ha conectado\n");
 
@@ -221,6 +241,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 			mensaje.setText("");
 
 		}
+
 		if (e.getSource() == botonSalir) { // SE PULSA BOTON SALIR
 			String texto = usuario + " > Abandona la app ... \n";
 			cliente.enviarMensaje(texto);

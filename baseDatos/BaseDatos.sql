@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `datos` (
   `CodEst` int(6) NOT NULL,
   `Fecha` date NOT NULL,
-  `Hora` date NOT NULL,
+  `Hora` time NOT NULL,
   `COmgm3` double DEFAULT NULL,
   `CO8hmgm3` double DEFAULT NULL,
   `NOgm3` double DEFAULT NULL,

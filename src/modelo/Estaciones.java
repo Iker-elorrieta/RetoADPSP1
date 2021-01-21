@@ -1,5 +1,5 @@
 package modelo;
-// Generated 19 ene. 2021 11:02:31 by Hibernate Tools 5.4.21.Final
+// Generated 21 ene. 2021 9:26:05 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +21,9 @@ public class Estaciones implements java.io.Serializable {
 	public Estaciones() {
 	}
 
-	
+	public Estaciones(int codEst) {
+		this.codEst = codEst;
+	}
 
 	public Estaciones(int codEst, String nombre, String provincia, String municipio, String direccion, String latitud,
 			String longitud, Set datoses) {
