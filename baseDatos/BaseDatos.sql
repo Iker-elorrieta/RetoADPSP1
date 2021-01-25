@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-01-2021 a las 11:52:37
+-- Tiempo de generación: 25-01-2021 a las 12:42:41
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.9
 
@@ -57,8 +57,8 @@ CREATE TABLE `espacios` (
   `Nombre` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
   `Descripcion` text COLLATE utf8_unicode_520_ci DEFAULT NULL,
   `Tipo` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `latitud` varchar(100) COLLATE utf8_unicode_520_ci NOT NULL,
-  `longitud` varchar(100) COLLATE utf8_unicode_520_ci NOT NULL
+  `latitud` varchar(100) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `longitud` varchar(100) COLLATE utf8_unicode_520_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci;
 
 -- --------------------------------------------------------
@@ -108,7 +108,7 @@ CREATE TABLE `favmun` (
 CREATE TABLE `fotoesp` (
   `CodUsu` int(4) NOT NULL,
   `CodEspacio` int(6) NOT NULL,
-  `foto` varchar(100) NOT NULL
+  `foto` longblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -120,7 +120,7 @@ CREATE TABLE `fotoesp` (
 CREATE TABLE `fotomun` (
   `CodUsu` int(4) NOT NULL,
   `CodMuni` int(6) NOT NULL,
-  `foto` varchar(100) NOT NULL
+  `foto` longblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -148,8 +148,8 @@ CREATE TABLE `municipios` (
   `Nombre` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
   `Descripcion` text COLLATE utf8_unicode_520_ci DEFAULT NULL,
   `CodProv` int(11) NOT NULL,
-  `latitud` varchar(100) COLLATE utf8_unicode_520_ci NOT NULL,
-  `longitud` varchar(100) COLLATE utf8_unicode_520_ci NOT NULL
+  `latitud` varchar(100) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `longitud` varchar(100) COLLATE utf8_unicode_520_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci;
 
 -- --------------------------------------------------------
