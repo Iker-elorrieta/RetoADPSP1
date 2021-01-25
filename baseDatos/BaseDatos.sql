@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-01-2021 a las 11:12:35
--- Versión del servidor: 10.4.17-MariaDB
--- Versión de PHP: 8.0.0
+-- Tiempo de generación: 25-01-2021 a las 11:52:37
+-- Versión del servidor: 10.4.14-MariaDB
+-- Versión de PHP: 7.4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -56,7 +56,9 @@ CREATE TABLE `espacios` (
   `CodEspacio` int(6) NOT NULL,
   `Nombre` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
   `Descripcion` text COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `Tipo` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL
+  `Tipo` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `latitud` varchar(100) COLLATE utf8_unicode_520_ci NOT NULL,
+  `longitud` varchar(100) COLLATE utf8_unicode_520_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci;
 
 -- --------------------------------------------------------
@@ -74,6 +76,52 @@ CREATE TABLE `estaciones` (
   `Latitud` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL,
   `Longitud` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `favesp`
+--
+
+CREATE TABLE `favesp` (
+  `CodUsu` int(4) NOT NULL,
+  `CodEspacio` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `favmun`
+--
+
+CREATE TABLE `favmun` (
+  `CodUsu` int(4) NOT NULL,
+  `CodMuni` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `fotoesp`
+--
+
+CREATE TABLE `fotoesp` (
+  `CodUsu` int(4) NOT NULL,
+  `CodEspacio` int(6) NOT NULL,
+  `foto` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `fotomun`
+--
+
+CREATE TABLE `fotomun` (
+  `CodUsu` int(4) NOT NULL,
+  `CodMuni` int(6) NOT NULL,
+  `foto` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -99,7 +147,9 @@ CREATE TABLE `municipios` (
   `CodMuni` int(6) NOT NULL,
   `Nombre` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
   `Descripcion` text COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `CodProv` int(11) NOT NULL
+  `CodProv` int(11) NOT NULL,
+  `latitud` varchar(100) COLLATE utf8_unicode_520_ci NOT NULL,
+  `longitud` varchar(100) COLLATE utf8_unicode_520_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci;
 
 -- --------------------------------------------------------
@@ -151,13 +201,42 @@ ALTER TABLE `datos`
 -- Indices de la tabla `espacios`
 --
 ALTER TABLE `espacios`
-  ADD PRIMARY KEY (`CodEspacio`);
+  ADD PRIMARY KEY (`CodEspacio`),
+  ADD KEY `CodEspacio` (`CodEspacio`);
 
 --
 -- Indices de la tabla `estaciones`
 --
 ALTER TABLE `estaciones`
   ADD PRIMARY KEY (`CodEst`);
+
+--
+-- Indices de la tabla `favesp`
+--
+ALTER TABLE `favesp`
+  ADD KEY `CodUsu` (`CodUsu`),
+  ADD KEY `CodEspacio` (`CodEspacio`);
+
+--
+-- Indices de la tabla `favmun`
+--
+ALTER TABLE `favmun`
+  ADD KEY `CodUsu` (`CodUsu`),
+  ADD KEY `CodMuni` (`CodMuni`);
+
+--
+-- Indices de la tabla `fotoesp`
+--
+ALTER TABLE `fotoesp`
+  ADD KEY `CodUsu` (`CodUsu`),
+  ADD KEY `CodEspacio` (`CodEspacio`);
+
+--
+-- Indices de la tabla `fotomun`
+--
+ALTER TABLE `fotomun`
+  ADD KEY `CodUsu` (`CodUsu`),
+  ADD KEY `CodMuni` (`CodMuni`);
 
 --
 -- Indices de la tabla `hashes`
@@ -171,7 +250,8 @@ ALTER TABLE `hashes`
 ALTER TABLE `municipios`
   ADD PRIMARY KEY (`CodMuniAuto`),
   ADD KEY `CodMuni` (`CodMuni`),
-  ADD KEY `CodProv` (`CodProv`);
+  ADD KEY `CodProv` (`CodProv`),
+  ADD KEY `CodMuni_2` (`CodMuni`);
 
 --
 -- Indices de la tabla `provincias`
@@ -190,7 +270,8 @@ ALTER TABLE `ubicaciones`
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`CodUsu`);
+  ADD PRIMARY KEY (`CodUsu`),
+  ADD KEY `CodUsu` (`CodUsu`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -217,6 +298,34 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `datos`
   ADD CONSTRAINT `datos_ibfk_1` FOREIGN KEY (`CodEst`) REFERENCES `estaciones` (`CodEst`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `favesp`
+--
+ALTER TABLE `favesp`
+  ADD CONSTRAINT `favesp_ibfk_1` FOREIGN KEY (`CodUsu`) REFERENCES `usuarios` (`CodUsu`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `favesp_ibfk_2` FOREIGN KEY (`CodEspacio`) REFERENCES `espacios` (`CodEspacio`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `favmun`
+--
+ALTER TABLE `favmun`
+  ADD CONSTRAINT `favmun_ibfk_1` FOREIGN KEY (`CodMuni`) REFERENCES `municipios` (`CodMuni`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `favmun_ibfk_2` FOREIGN KEY (`CodUsu`) REFERENCES `usuarios` (`CodUsu`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `fotoesp`
+--
+ALTER TABLE `fotoesp`
+  ADD CONSTRAINT `fotoesp_ibfk_1` FOREIGN KEY (`CodUsu`) REFERENCES `usuarios` (`CodUsu`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fotoesp_ibfk_2` FOREIGN KEY (`CodEspacio`) REFERENCES `espacios` (`CodEspacio`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `fotomun`
+--
+ALTER TABLE `fotomun`
+  ADD CONSTRAINT `fotomun_ibfk_1` FOREIGN KEY (`CodMuni`) REFERENCES `municipios` (`CodMuni`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fotomun_ibfk_2` FOREIGN KEY (`CodUsu`) REFERENCES `usuarios` (`CodUsu`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `municipios`
