@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 21 ene. 2021 9:26:05 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 ene. 2021 15:55:13 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Municipios" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="municipios">
         <id name="codMuniAuto" type="java.lang.Integer">
@@ -18,11 +18,29 @@
         <property generated="never" lazy="false" name="descripcion" optimistic-lock="true" type="string" unique="false">
             <column length="65535" name="Descripcion"/>
         </property>
+        <property generated="never" lazy="false" name="latitud" optimistic-lock="true" type="string" unique="false">
+            <column length="100" name="latitud"/>
+        </property>
+        <property generated="never" lazy="false" name="longitud" optimistic-lock="true" type="string" unique="false">
+            <column length="100" name="longitud"/>
+        </property>
         <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="ubicacioneses" optimistic-lock="true" sort="unsorted" table="ubicaciones">
             <key on-delete="noaction">
                 <column name="CodMuni" not-null="true"/>
             </key>
             <one-to-many class="modelo.Ubicaciones" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="fotomuns" optimistic-lock="true" sort="unsorted" table="fotomun">
+            <key on-delete="noaction">
+                <column name="CodMuni" not-null="true"/>
+            </key>
+            <one-to-many class="modelo.Fotomun" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="favmuns" optimistic-lock="true" sort="unsorted" table="favmun">
+            <key on-delete="noaction">
+                <column name="CodMuni" not-null="true"/>
+            </key>
+            <one-to-many class="modelo.Favmun" embed-xml="true" not-found="exception"/>
         </set>
     </class>
 </hibernate-mapping>

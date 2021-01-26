@@ -130,6 +130,22 @@ public class LecturaDatos {
 				municipio.setProvincias(provincia);
 				nombreProv = "";
 				listaMunicipios.add(municipio);
+			}else if (linea.contains("latwgs84") ) {
+				
+				linea = linea.split("\" ")[1];
+				linea = linea.split(" \"")[1];				
+				linea = linea.split("\"")[0];
+				
+				municipio.setLongitud(linea);
+
+			}else if (linea.contains("lonwgs84") ) {
+				
+				linea = linea.split("\" ")[1];
+				linea = linea.split(" \"")[1];				
+				linea = linea.split("\"")[0];
+				
+				municipio.setLatitud(linea);
+
 			}
 			resultado.append(linea + "\n");
 		}
@@ -188,7 +204,23 @@ public class LecturaDatos {
 				espacio.setTipo(linea);
 				listaEspacios.add(espacio);
 
-			} else if (linea.contains("municipalitycode")) {
+			} else if (linea.contains("latwgs84") ) {
+				
+				linea = linea.split("\" ")[1];
+				linea = linea.split(" \"")[1];				
+				linea = linea.split("\"")[0];
+				
+				espacio.setLongitud(linea);
+
+			}else if (linea.contains("lonwgs84") ) {
+				
+				linea = linea.split("\" ")[1];
+				linea = linea.split(" \"")[1];				
+				linea = linea.split("\"")[0];
+				
+				espacio.setLatitud(linea);
+
+			}else if (linea.contains("municipalitycode")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split(",")[0];
 				linea = linea.split("\"")[0];

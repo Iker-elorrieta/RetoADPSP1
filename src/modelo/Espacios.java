@@ -1,5 +1,5 @@
 package modelo;
-// Generated 21 ene. 2021 9:26:05 by Hibernate Tools 5.4.21.Final
+// Generated 26 ene. 2021 15:55:13 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +13,10 @@ public class Espacios implements java.io.Serializable {
 	private String nombre;
 	private String descripcion;
 	private String tipo;
+	private String latitud;
+	private String longitud;
+	private Set fotoesps = new HashSet(0);
+	private Set favesps = new HashSet(0);
 	private Set ubicacioneses = new HashSet(0);
 
 	public Espacios() {
@@ -23,11 +27,16 @@ public class Espacios implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Espacios(int codEspacio, String nombre, String descripcion, String tipo, Set ubicacioneses) {
+	public Espacios(int codEspacio, String nombre, String descripcion, String tipo, String latitud, String longitud,
+			Set fotoesps, Set favesps, Set ubicacioneses) {
 		this.codEspacio = codEspacio;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.tipo = tipo;
+		this.latitud = latitud;
+		this.longitud = longitud;
+		this.fotoesps = fotoesps;
+		this.favesps = favesps;
 		this.ubicacioneses = ubicacioneses;
 	}
 
@@ -61,6 +70,38 @@ public class Espacios implements java.io.Serializable {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getLatitud() {
+		return this.latitud;
+	}
+
+	public void setLatitud(String latitud) {
+		this.latitud = latitud;
+	}
+
+	public String getLongitud() {
+		return this.longitud;
+	}
+
+	public void setLongitud(String longitud) {
+		this.longitud = longitud;
+	}
+
+	public Set getFotoesps() {
+		return this.fotoesps;
+	}
+
+	public void setFotoesps(Set fotoesps) {
+		this.fotoesps = fotoesps;
+	}
+
+	public Set getFavesps() {
+		return this.favesps;
+	}
+
+	public void setFavesps(Set favesps) {
+		this.favesps = favesps;
 	}
 
 	public Set getUbicacioneses() {

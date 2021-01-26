@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generated 26 ene. 2021 15:55:13 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
-    <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Ubicaciones" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="ubicaciones">
-        <composite-id class="modelo.UbicacionesId" mapped="false" name="id" unsaved-value="undefined">
+    <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Fotoesp" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="fotoesp">
+        <composite-id class="modelo.FotoespId" mapped="false" name="id" unsaved-value="undefined">
+            <key-property name="codUsu" type="int">
+                <column name="CodUsu"/>
+            </key-property>
             <key-property name="codEspacio" type="int">
                 <column name="CodEspacio"/>
             </key-property>
-            <key-property name="codMuni" type="int">
-                <column name="CodMuni"/>
+            <key-property name="foto" type="binary">
+                <column name="foto"/>
             </key-property>
         </composite-id>
         <many-to-one class="modelo.Espacios" embed-xml="true" fetch="select" insert="false" name="espacios" not-found="exception" optimistic-lock="true" unique="false" update="false">
             <column name="CodEspacio" not-null="true"/>
         </many-to-one>
-        <many-to-one class="modelo.Municipios" embed-xml="true" fetch="select" insert="false" name="municipios" not-found="exception" optimistic-lock="true" unique="false" update="false">
-            <column name="CodMuni" not-null="true"/>
+        <many-to-one class="modelo.Usuarios" embed-xml="true" fetch="select" insert="false" name="usuarios" not-found="exception" optimistic-lock="true" unique="false" update="false">
+            <column name="CodUsu" not-null="true"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

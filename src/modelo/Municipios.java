@@ -1,5 +1,5 @@
 package modelo;
-// Generated 21 ene. 2021 9:26:05 by Hibernate Tools 5.4.21.Final
+// Generated 26 ene. 2021 15:55:13 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +14,11 @@ public class Municipios implements java.io.Serializable {
 	private int codMuni;
 	private String nombre;
 	private String descripcion;
+	private String latitud;
+	private String longitud;
 	private Set ubicacioneses = new HashSet(0);
+	private Set fotomuns = new HashSet(0);
+	private Set favmuns = new HashSet(0);
 
 	public Municipios() {
 	}
@@ -25,12 +29,17 @@ public class Municipios implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Municipios(Provincias provincias, int codMuni, String nombre, String descripcion, Set ubicacioneses) {
+	public Municipios(Provincias provincias, int codMuni, String nombre, String descripcion, String latitud,
+			String longitud, Set ubicacioneses, Set fotomuns, Set favmuns) {
 		this.provincias = provincias;
 		this.codMuni = codMuni;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.latitud = latitud;
+		this.longitud = longitud;
 		this.ubicacioneses = ubicacioneses;
+		this.fotomuns = fotomuns;
+		this.favmuns = favmuns;
 	}
 
 	public Integer getCodMuniAuto() {
@@ -73,12 +82,44 @@ public class Municipios implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public String getLatitud() {
+		return this.latitud;
+	}
+
+	public void setLatitud(String latitud) {
+		this.latitud = latitud;
+	}
+
+	public String getLongitud() {
+		return this.longitud;
+	}
+
+	public void setLongitud(String longitud) {
+		this.longitud = longitud;
+	}
+
 	public Set getUbicacioneses() {
 		return this.ubicacioneses;
 	}
 
 	public void setUbicacioneses(Set ubicacioneses) {
 		this.ubicacioneses = ubicacioneses;
+	}
+
+	public Set getFotomuns() {
+		return this.fotomuns;
+	}
+
+	public void setFotomuns(Set fotomuns) {
+		this.fotomuns = fotomuns;
+	}
+
+	public Set getFavmuns() {
+		return this.favmuns;
+	}
+
+	public void setFavmuns(Set favmuns) {
+		this.favmuns = favmuns;
 	}
 
 }
