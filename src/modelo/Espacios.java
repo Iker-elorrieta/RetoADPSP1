@@ -1,5 +1,5 @@
 package modelo;
-// Generated 26 ene. 2021 15:55:13 by Hibernate Tools 5.4.21.Final
+// Generated 29 ene. 2021 15:52:31 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,42 +9,40 @@ import java.util.Set;
  */
 public class Espacios implements java.io.Serializable {
 
-	private int codEspacio;
+	private Integer codEspacio;
 	private String nombre;
 	private String descripcion;
 	private String tipo;
 	private String latitud;
 	private String longitud;
+	private Set ubicacioneses = new HashSet(0);
 	private Set fotoesps = new HashSet(0);
 	private Set favesps = new HashSet(0);
-	private Set ubicacioneses = new HashSet(0);
 
 	public Espacios() {
 	}
 
-	public Espacios(int codEspacio, String nombre) {
-		this.codEspacio = codEspacio;
+	public Espacios(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public Espacios(int codEspacio, String nombre, String descripcion, String tipo, String latitud, String longitud,
-			Set fotoesps, Set favesps, Set ubicacioneses) {
-		this.codEspacio = codEspacio;
+	public Espacios(String nombre, String descripcion, String tipo, String latitud, String longitud, Set ubicacioneses,
+			Set fotoesps, Set favesps) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.tipo = tipo;
 		this.latitud = latitud;
 		this.longitud = longitud;
+		this.ubicacioneses = ubicacioneses;
 		this.fotoesps = fotoesps;
 		this.favesps = favesps;
-		this.ubicacioneses = ubicacioneses;
 	}
 
-	public int getCodEspacio() {
+	public Integer getCodEspacio() {
 		return this.codEspacio;
 	}
 
-	public void setCodEspacio(int codEspacio) {
+	public void setCodEspacio(Integer codEspacio) {
 		this.codEspacio = codEspacio;
 	}
 
@@ -88,6 +86,14 @@ public class Espacios implements java.io.Serializable {
 		this.longitud = longitud;
 	}
 
+	public Set getUbicacioneses() {
+		return this.ubicacioneses;
+	}
+
+	public void setUbicacioneses(Set ubicacioneses) {
+		this.ubicacioneses = ubicacioneses;
+	}
+
 	public Set getFotoesps() {
 		return this.fotoesps;
 	}
@@ -102,14 +108,6 @@ public class Espacios implements java.io.Serializable {
 
 	public void setFavesps(Set favesps) {
 		this.favesps = favesps;
-	}
-
-	public Set getUbicacioneses() {
-		return this.ubicacioneses;
-	}
-
-	public void setUbicacioneses(Set ubicacioneses) {
-		this.ubicacioneses = ubicacioneses;
 	}
 
 }

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-01-2021 a las 12:42:41
--- Versión del servidor: 10.4.14-MariaDB
--- Versión de PHP: 7.4.9
+-- Tiempo de generación: 29-01-2021 a las 10:35:26
+-- Versión del servidor: 10.4.17-MariaDB
+-- Versión de PHP: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `datos` (
+  `CodDatos` int(11) NOT NULL,
   `CodEst` int(6) NOT NULL,
   `Fecha` date NOT NULL,
   `Hora` time NOT NULL,
@@ -70,8 +71,7 @@ CREATE TABLE `espacios` (
 CREATE TABLE `estaciones` (
   `CodEst` int(4) NOT NULL,
   `Nombre` varchar(50) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `Provincia` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL,
-  `Municipio` varchar(50) COLLATE utf8_unicode_520_ci DEFAULT NULL,
+  `CodMuni` int(11) NOT NULL,
   `Direccion` varchar(100) COLLATE utf8_unicode_520_ci DEFAULT NULL,
   `Latitud` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL,
   `Longitud` varchar(30) COLLATE utf8_unicode_520_ci DEFAULT NULL
@@ -194,21 +194,22 @@ CREATE TABLE `usuarios` (
 -- Indices de la tabla `datos`
 --
 ALTER TABLE `datos`
-  ADD PRIMARY KEY (`Fecha`,`Hora`,`CodEst`) USING BTREE,
+  ADD PRIMARY KEY (`CodDatos`),
   ADD KEY `CodEst` (`CodEst`);
 
 --
 -- Indices de la tabla `espacios`
 --
 ALTER TABLE `espacios`
-  ADD PRIMARY KEY (`CodEspacio`),
-  ADD KEY `CodEspacio` (`CodEspacio`);
+  ADD PRIMARY KEY (`CodEspacio`);
+  
 
 --
 -- Indices de la tabla `estaciones`
 --
 ALTER TABLE `estaciones`
-  ADD PRIMARY KEY (`CodEst`);
+  ADD PRIMARY KEY (`CodEst`)
+  ;
 
 --
 -- Indices de la tabla `favesp`
@@ -250,8 +251,8 @@ ALTER TABLE `hashes`
 ALTER TABLE `municipios`
   ADD PRIMARY KEY (`CodMuniAuto`),
   ADD KEY `CodMuni` (`CodMuni`),
-  ADD KEY `CodProv` (`CodProv`),
-  ADD KEY `CodMuni_2` (`CodMuni`);
+  ADD KEY `CodProv` (`CodProv`)
+ ;
 
 --
 -- Indices de la tabla `provincias`
@@ -270,12 +271,18 @@ ALTER TABLE `ubicaciones`
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`CodUsu`),
-  ADD KEY `CodUsu` (`CodUsu`);
+  ADD PRIMARY KEY (`CodUsu`)
+;
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `datos`
+--
+ALTER TABLE `datos`
+  MODIFY `CodDatos` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `municipios`
@@ -283,8 +290,14 @@ ALTER TABLE `usuarios`
 ALTER TABLE `municipios`
   MODIFY `CodMuniAuto` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
 
---
--- AUTO_INCREMENT de la tabla `usuarios`
+
+ALTER TABLE `espacios`
+  MODIFY `CodEspacio` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
+
+ALTER TABLE `estaciones`
+  MODIFY `CodEst` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
+
+
 --
 ALTER TABLE `usuarios`
   MODIFY `CodUsu` int(4) NOT NULL AUTO_INCREMENT;
@@ -298,6 +311,12 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `datos`
   ADD CONSTRAINT `datos_ibfk_1` FOREIGN KEY (`CodEst`) REFERENCES `estaciones` (`CodEst`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `estaciones`
+--
+ALTER TABLE `estaciones`
+  ADD CONSTRAINT `estaciones_ibfk_1` FOREIGN KEY (`CodMuni`) REFERENCES `municipios` (`CodMuni`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `favesp`
@@ -331,7 +350,7 @@ ALTER TABLE `fotomun`
 -- Filtros para la tabla `municipios`
 --
 ALTER TABLE `municipios`
-  ADD CONSTRAINT `municipios_ibfk_2` FOREIGN KEY (`CodProv`) REFERENCES `provincias` (`CodProv`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `municipios_ibfk_1` FOREIGN KEY (`CodProv`) REFERENCES `provincias` (`CodProv`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `ubicaciones`

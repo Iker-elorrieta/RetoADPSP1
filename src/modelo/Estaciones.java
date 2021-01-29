@@ -1,5 +1,5 @@
 package modelo;
-// Generated 26 ene. 2021 15:55:13 by Hibernate Tools 5.4.21.Final
+// Generated 29 ene. 2021 15:52:31 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,10 +9,9 @@ import java.util.Set;
  */
 public class Estaciones implements java.io.Serializable {
 
-	private int codEst;
+	private Integer codEst;
+	private Municipios municipios;
 	private String nombre;
-	private String provincia;
-	private String municipio;
 	private String direccion;
 	private String latitud;
 	private String longitud;
@@ -21,28 +20,34 @@ public class Estaciones implements java.io.Serializable {
 	public Estaciones() {
 	}
 
-	public Estaciones(int codEst) {
-		this.codEst = codEst;
+	public Estaciones(Municipios municipios) {
+		this.municipios = municipios;
 	}
 
-	public Estaciones(int codEst, String nombre, String provincia, String municipio, String direccion, String latitud,
-			String longitud, Set datoses) {
-		this.codEst = codEst;
+	public Estaciones(Municipios municipios, String nombre, String direccion, String latitud, String longitud,
+			Set datoses) {
+		this.municipios = municipios;
 		this.nombre = nombre;
-		this.provincia = provincia;
-		this.municipio = municipio;
 		this.direccion = direccion;
 		this.latitud = latitud;
 		this.longitud = longitud;
 		this.datoses = datoses;
 	}
 
-	public int getCodEst() {
+	public Integer getCodEst() {
 		return this.codEst;
 	}
 
-	public void setCodEst(int codEst) {
+	public void setCodEst(Integer codEst) {
 		this.codEst = codEst;
+	}
+
+	public Municipios getMunicipios() {
+		return this.municipios;
+	}
+
+	public void setMunicipios(Municipios municipios) {
+		this.municipios = municipios;
 	}
 
 	public String getNombre() {
@@ -51,22 +56,6 @@ public class Estaciones implements java.io.Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public String getProvincia() {
-		return this.provincia;
-	}
-
-	public void setProvincia(String provincia) {
-		this.provincia = provincia;
-	}
-
-	public String getMunicipio() {
-		return this.municipio;
-	}
-
-	public void setMunicipio(String municipio) {
-		this.municipio = municipio;
 	}
 
 	public String getDireccion() {

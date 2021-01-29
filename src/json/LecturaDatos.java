@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import dao.BaseDatos;
 import modelo.Datos;
-import modelo.DatosId;
 
 import modelo.Espacios;
 import modelo.Estaciones;
@@ -153,9 +152,9 @@ public class LecturaDatos {
 		rd.close();
 		bd.insertMunicipios(listaMunicipios);
 
-		EscribirXml ex = new EscribirXml();
-		ex.generarXmlMunicipios(listaMunicipios);
-		ex.generarXmlProvincias(listProvincias);
+//		EscribirXml ex = new EscribirXml();
+//		ex.generarXmlMunicipios(listaMunicipios);
+//		ex.generarXmlProvincias(listProvincias);
 
 		return resultado.toString();
 	}
@@ -254,8 +253,8 @@ public class LecturaDatos {
 
 			resultado.append(linea + "\n");
 		}
-		EscribirXml ex = new EscribirXml();
-		ex.generarXmlEspacios(listaEspacios);
+//		EscribirXml ex = new EscribirXml();
+//		ex.generarXmlEspacios(listaEspacios);
 		bd.insertEspacios(listaEspacios);
 		bd.insertUbicaciones(listaUbicaciones);
 		rd.close();
@@ -292,15 +291,16 @@ public class LecturaDatos {
 				estacion.setCodEst(codEstacion);
 				estacion.setNombre(linea);
 
-			} else if (linea.contains("Province")) {
+			}  else if (linea.contains("Town")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-				estacion.setProvincia(linea);
-
-			} else if (linea.contains("Town")) {
-				linea = linea.split(" \"")[2];
-				linea = linea.split("\"")[0];
-				estacion.setMunicipio(linea);
+				
+				for (Municipios municipio:listaMunicipios) {
+					if(municipio.getNombre().equals(linea)) {
+						estacion.setMunicipios(municipio);
+					}
+				}
+				
 
 			} else if (linea.contains("Address")) {
 				linea = linea.split("\" ")[1];
@@ -323,8 +323,8 @@ public class LecturaDatos {
 			resultado.append(linea + "\n");
 		}
 		bd.insertEstaciones(listaEstaciones);
-		EscribirXml ex = new EscribirXml();
-		ex.generarXmlEstaciones(listaEstaciones);
+//		EscribirXml ex = new EscribirXml();
+//		ex.generarXmlEstaciones(listaEstaciones);
 		rd.close();
 		return resultado.toString();
 	}
@@ -380,7 +380,7 @@ public class LecturaDatos {
 		BaseDatos bd = new BaseDatos();
 		Datos dato = new Datos();
 		dato.setEstaciones(estacion);
-		DatosId datoId = null;
+		
 		StringBuilder resultado = new StringBuilder();
 		URL url = new URL(urlParaVisitar);
 
@@ -396,22 +396,20 @@ public class LecturaDatos {
 				linea = linea.split(" ")[0];
 
 			} else if (linea.contains("Date")) {
-				datoId = new DatosId();
-				datoId.setCodEst(estacion.getCodEst());
-
+				
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
 				SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
 				Date date = formatter1.parse(linea);
-				datoId.setFecha(date);
+				dato.setFecha(date);
 
 			} else if (linea.contains("Hour")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
 				SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");	
 				 Date d =  dateFormat.parse(linea);
-				datoId.setHora(d);
-				dato.setId(datoId);
+				dato.setHora(d);
+			
 
 			} else if (linea.contains("COmgm3")) {
 				linea = linea.split(" \"")[2];
@@ -477,8 +475,8 @@ public class LecturaDatos {
 		}
 
 		bd.insertDatos(listaDatos);
-		EscribirXml xml = new EscribirXml();
-		xml.generarXmlDatos(listaDatos);
+//		EscribirXml xml = new EscribirXml();
+//		xml.generarXmlDatos(listaDatos);
 		rd.close();
 
 		return resultado.toString();

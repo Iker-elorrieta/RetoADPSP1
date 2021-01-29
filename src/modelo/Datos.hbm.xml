@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 26 ene. 2021 15:55:13 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 29 ene. 2021 15:52:31 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Datos" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="datos">
-        <composite-id class="modelo.DatosId" mapped="false" name="id" unsaved-value="undefined">
-            <key-property name="fecha" type="date">
-                <column length="10" name="Fecha"/>
-            </key-property>
-            <key-property name="hora" type="time">
-                <column length="8" name="Hora"/>
-            </key-property>
-            <key-property name="codEst" type="int">
-                <column name="CodEst"/>
-            </key-property>
-        </composite-id>
-        <many-to-one class="modelo.Estaciones" embed-xml="true" fetch="select" insert="false" name="estaciones" not-found="exception" optimistic-lock="true" unique="false" update="false">
+        <id name="codDatos" type="java.lang.Integer">
+            <column name="CodDatos"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="modelo.Estaciones" embed-xml="true" fetch="select" insert="true" name="estaciones" not-found="exception" optimistic-lock="true" unique="false" update="true">
             <column name="CodEst" not-null="true"/>
         </many-to-one>
+        <property generated="never" lazy="false" name="fecha" optimistic-lock="true" type="date" unique="false">
+            <column length="10" name="Fecha" not-null="true"/>
+        </property>
+        <property generated="never" lazy="false" name="hora" optimistic-lock="true" type="time" unique="false">
+            <column length="8" name="Hora" not-null="true"/>
+        </property>
         <property generated="never" lazy="false" name="comgm3" optimistic-lock="true" type="java.lang.Double" unique="false">
             <column name="COmgm3" precision="22" scale="0"/>
         </property>
