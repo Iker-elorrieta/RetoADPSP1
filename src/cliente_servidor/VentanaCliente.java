@@ -10,6 +10,7 @@ import javax.swing.*;
 import dao.BaseDatos;
 import json.LecturaDatos;
 import modelo.Espacios;
+import modelo.Estaciones;
 import modelo.Municipios;
 import modelo.Provincias;
 import modelo.Ubicaciones;
@@ -40,7 +41,8 @@ public class VentanaCliente extends JFrame implements ActionListener {
 	private Provincias provinciaSeleccionada;
 	private Ubicaciones ubicacionesSeleccionadas;
 	BaseDatos bd = new BaseDatos();
-	private ArrayList<Municipios> listaMunicipios;
+	private ArrayList<Provincias> listaProvincias = bd.obtenerProvincias();
+	private ArrayList<Municipios> listaMunicipios = bd.obtenerMunicipios(null, null);
 	private ArrayList<Espacios> listaEspacios;
 	private ArrayList<Ubicaciones> listaUbicaciones;
 	private boolean municipiosPulsado = false;
@@ -85,7 +87,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				municipiosPulsado = true;
 				espaciosPulsado = false;
-				
+
 				listaMunicipios = LecturaDatos.listaMunicipios;
 				mostrarMunicipios(listaMunicipios);
 			}
@@ -125,7 +127,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		comboBoxProvincias = new JComboBox<String>();
 		comboBoxProvincias.setBounds(729, 62, 146, 22);
 		getContentPane().add(comboBoxProvincias);
-		
+
 		comboBoxMunicipios = new JComboBox<String>();
 		comboBoxMunicipios.setBounds(729, 127, 146, 22);
 		getContentPane().add(comboBoxMunicipios);
@@ -138,8 +140,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		label_1.setBounds(729, 127, 115, 22);
 		getContentPane().add(label_1);
 
-		
-		for (Provincias provincia : LecturaDatos.listProvincias) {
+		for (Provincias provincia : listaProvincias) {
 			comboBoxProvincias.addItem(provincia.getNombre());
 		}
 
@@ -149,31 +150,42 @@ public class VentanaCliente extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				comboBoxMunicipios.removeAllItems();
 
-				for (Provincias provincia : LecturaDatos.listProvincias) {
+				for (Provincias provincia : listaProvincias) {
 					if (provincia.getNombre()
 							.equals(comboBoxProvincias.getItemAt(comboBoxProvincias.getSelectedIndex()))) {
 						provinciaSeleccionada = provincia;
 
-						ArrayList<Municipios> municipiosSeleccionados = new ArrayList<>();
-						for (Municipios municipio : LecturaDatos.listaMunicipios) {
+						if (municipiosPulsado) {
 
-							if (municipio.getProvincias().getCodProv() == provinciaSeleccionada.getCodProv()) {
+							ArrayList<Integer> codProv = new ArrayList<>();
+							codProv.add(provinciaSeleccionada.getCodProv());
+							ArrayList<Municipios> municipiosSeleccionados = bd.obtenerMunicipios(null, codProv);
 
-								municipiosSeleccionados.add(municipio);
+							for (Municipios municipio : municipiosSeleccionados) {
+
 								comboBoxMunicipios.addItem(municipio.getNombre());
-								
+
 							}
+							mostrarMunicipios(municipiosSeleccionados);
 						}
-						mostrarMunicipios(municipiosSeleccionados);
+
+						else if (espaciosPulsado) {						
+						
+							
+							
+
+						}
+
+						comboBoxMunicipios.setVisible(true);
 					}
 				}
-				comboBoxMunicipios.setVisible(true);
 			}
 		});
 ////////////////////////////////////
 // SELECCIONAMOS ALGO EN EL COMBOBOX MUNICIPIOS
-		
+
 		comboBoxMunicipios.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 
 				ArrayList<Espacios> espaciosSeleccionados = new ArrayList<>();
@@ -199,9 +211,9 @@ public class VentanaCliente extends JFrame implements ActionListener {
 				}
 				mostrarEspacios(espaciosSeleccionados);
 			}
+
 		});
 ////////////////////////////////
-		
 
 		cliente.enviarMensaje("> " + usuario + " se ha conectado\n");
 

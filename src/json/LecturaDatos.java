@@ -31,6 +31,7 @@ public class LecturaDatos {
 	public static ArrayList<Espacios> listaEspacios = new ArrayList<>();
 	public static ArrayList<Ubicaciones> listaUbicaciones = new ArrayList<>();
 	public static ArrayList<Datos> listaDatos = new ArrayList<>();
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String urlMunicipios = "https://opendata.euskadi.eus/contenidos/ds_recursos_turisticos/pueblos_euskadi_turismo/opendata/herriak.json";
@@ -52,14 +53,12 @@ public class LecturaDatos {
 			// System.out.println(respuesta);
 		} catch (Exception e) {
 			e.printStackTrace();
-			
 
 		}
 	}
 
 	public static String peticionHttpGetMunicipios(String urlParaVisitar) throws Exception {
 
-		
 		String nombreProv = "";
 		String nombreMuni = "";
 		int codMuni = 0;
@@ -129,20 +128,20 @@ public class LecturaDatos {
 				municipio.setProvincias(provincia);
 				nombreProv = "";
 				listaMunicipios.add(municipio);
-			}else if (linea.contains("latwgs84") ) {
-				
+			} else if (linea.contains("latwgs84")) {
+
 				linea = linea.split("\" ")[1];
-				linea = linea.split(" \"")[1];				
+				linea = linea.split(" \"")[1];
 				linea = linea.split("\"")[0];
-				
+
 				municipio.setLongitud(linea);
 
-			}else if (linea.contains("lonwgs84") ) {
-				
+			} else if (linea.contains("lonwgs84")) {
+
 				linea = linea.split("\" ")[1];
-				linea = linea.split(" \"")[1];				
+				linea = linea.split(" \"")[1];
 				linea = linea.split("\"")[0];
-				
+
 				municipio.setLatitud(linea);
 
 			}
@@ -151,6 +150,7 @@ public class LecturaDatos {
 
 		rd.close();
 		bd.insertMunicipios(listaMunicipios);
+		listaMunicipios.clear();
 
 //		EscribirXml ex = new EscribirXml();
 //		ex.generarXmlMunicipios(listaMunicipios);
@@ -160,13 +160,15 @@ public class LecturaDatos {
 	}
 
 	public static String peticionHttpGetEspacios(String urlParaVisitar) throws Exception {
+		BaseDatos bd = new BaseDatos();
 
-		
+		listaMunicipios = bd.obtenerMunicipios(null, null);
+
 		ArrayList<Integer> codigosMuniFiltrado = new ArrayList<>();
 		ArrayList<Integer> codigosProvFiltrado = new ArrayList<>();
 		String[] codigosMuni = null;
 		int codEspacio = 0;
-		BaseDatos bd = new BaseDatos();
+
 		Espacios espacio = new Espacios();
 
 		StringBuilder resultado = new StringBuilder();
@@ -203,23 +205,23 @@ public class LecturaDatos {
 				espacio.setTipo(linea);
 				listaEspacios.add(espacio);
 
-			} else if (linea.contains("latwgs84") ) {
-				
+			} else if (linea.contains("latwgs84")) {
+
 				linea = linea.split("\" ")[1];
-				linea = linea.split(" \"")[1];				
+				linea = linea.split(" \"")[1];
 				linea = linea.split("\"")[0];
-				
+
 				espacio.setLongitud(linea);
 
-			}else if (linea.contains("lonwgs84") ) {
-				
+			} else if (linea.contains("lonwgs84")) {
+
 				linea = linea.split("\" ")[1];
-				linea = linea.split(" \"")[1];				
+				linea = linea.split(" \"")[1];
 				linea = linea.split("\"")[0];
-				
+
 				espacio.setLatitud(linea);
 
-			}else if (linea.contains("municipalitycode")) {
+			} else if (linea.contains("municipalitycode")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split(",")[0];
 				linea = linea.split("\"")[0];
@@ -245,7 +247,7 @@ public class LecturaDatos {
 				}
 				ArrayList<Municipios> municipios = bd.obtenerMunicipios(codigosMuniFiltrado, codigosProvFiltrado);
 				for (Municipios municipio : municipios) {
-					UbicacionesId uId = new UbicacionesId(codEspacio, municipio.getCodMuni());
+					UbicacionesId uId = new UbicacionesId(codEspacio, municipio.getCodMuniAuto());
 					Ubicaciones ubicacion = new Ubicaciones(uId, espacio, municipio);
 					listaUbicaciones.add(ubicacion);
 				}
@@ -291,16 +293,16 @@ public class LecturaDatos {
 				estacion.setCodEst(codEstacion);
 				estacion.setNombre(linea);
 
-			}  else if (linea.contains("Town")) {
+			} else if (linea.contains("Town")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-				
-				for (Municipios municipio:listaMunicipios) {
-					if(municipio.getNombre().equals(linea)) {
+
+				for (Municipios municipio : listaMunicipios) {
+					if (municipio.getNombre().equals(linea)) {
 						estacion.setMunicipios(municipio);
+
 					}
 				}
-				
 
 			} else if (linea.contains("Address")) {
 				linea = linea.split("\" ")[1];
@@ -375,12 +377,10 @@ public class LecturaDatos {
 
 	public static String peticionHttpGetDatosIndice(String urlParaVisitar, Estaciones estacion) throws Exception {
 
-		
-
 		BaseDatos bd = new BaseDatos();
 		Datos dato = new Datos();
 		dato.setEstaciones(estacion);
-		
+
 		StringBuilder resultado = new StringBuilder();
 		URL url = new URL(urlParaVisitar);
 
@@ -396,7 +396,7 @@ public class LecturaDatos {
 				linea = linea.split(" ")[0];
 
 			} else if (linea.contains("Date")) {
-				
+
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
 				SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
@@ -406,10 +406,9 @@ public class LecturaDatos {
 			} else if (linea.contains("Hour")) {
 				linea = linea.split(" \"")[2];
 				linea = linea.split("\"")[0];
-				SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");	
-				 Date d =  dateFormat.parse(linea);
+				SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm");
+				Date d = dateFormat.parse(linea);
 				dato.setHora(d);
-			
 
 			} else if (linea.contains("COmgm3")) {
 				linea = linea.split(" \"")[2];

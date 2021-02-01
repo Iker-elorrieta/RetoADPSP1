@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generated 29 ene. 2021 15:52:31 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 1 feb. 2021 17:36:04 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
     <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Estaciones" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="estaciones">
         <id name="codEst" type="java.lang.Integer">
@@ -7,7 +7,7 @@
             <generator class="identity"/>
         </id>
         <many-to-one class="modelo.Municipios" embed-xml="true" fetch="select" insert="true" name="municipios" not-found="exception" optimistic-lock="true" unique="false" update="true">
-            <column name="CodMuni" not-null="true"/>
+            <column name="CodMuniAuto" not-null="true"/>
         </many-to-one>
         <property generated="never" lazy="false" name="nombre" optimistic-lock="true" type="string" unique="false">
             <column length="50" name="Nombre"/>

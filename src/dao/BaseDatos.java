@@ -60,7 +60,7 @@ public class BaseDatos {
 
 			return true;
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 			return false;
 		}
@@ -194,13 +194,13 @@ public class BaseDatos {
 			return false;
 		}
 	}
-	
+
 	public Usuarios obtenerUsuario(String nombre, String contrasena) {
 		Usuarios usuario = null;
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
 
-		String hql = " from Usuarios where Nombre = '" + nombre + "' and Password = '"+contrasena+"'";
+		String hql = " from Usuarios where Nombre = '" + nombre + "' and Password = '" + contrasena + "'";
 
 		Query q = session.createQuery(hql);
 		usuario = (Usuarios) q.uniqueResult();
@@ -223,18 +223,112 @@ public class BaseDatos {
 		return provincia;
 	}
 
-	public Provincias obtenerProvincias(int cod) {
+	public ArrayList<Provincias> obtenerProvincias() {
 		Provincias provincia = null;
+		ArrayList<Provincias> provincias = new ArrayList<Provincias>();
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
 
-		String hql = " from Provincias where CodProv = " + cod + "";
-
+		String hql = " from Provincias";
 		Query q = session.createQuery(hql);
-		provincia = (Provincias) q.uniqueResult();
+		List<Provincias> prov = q.list();
+		for (int x = 0; x < prov.size(); x++) {
+
+			provincia = prov.get(x);
+			provincias.add(provincia);
+		}
 
 		session.close();
-		return provincia;
+		return provincias;
+	}
+
+	public ArrayList<Espacios> obtenerEspacios(Integer codMuni, Integer codProv) {
+		Espacios espacio = null;
+		Ubicaciones ubicacion = null;
+		String hql = "";
+		ArrayList<Espacios> espacios = new ArrayList<Espacios>();
+		ArrayList<Ubicaciones> ubicaciones = new ArrayList<Ubicaciones>();
+
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+
+		if (codMuni == null && codProv == null) {
+			hql = " from Espacios";
+			Query q = session.createQuery(hql);
+			List<Espacios> est = q.list();
+			for (int x = 0; x < est.size(); x++) {
+
+				espacio = est.get(x);
+				espacios.add(espacio);
+			}
+		} else if (codMuni == null && codProv != null) {
+			hql = " from Ubicaciones where municipios.provincias.codProv = " + codProv;
+
+			Query q = session.createQuery(hql);
+			List<Ubicaciones> ubi = q.list();
+
+			for (int x = 0; x < ubi.size(); x++) {
+				ubicacion = ubi.get(x);
+				hql = " from Espacios where codMuniAuto = " + ubicacion.getMunicipios().getCodMuniAuto();
+				Query q2 = session.createQuery(hql);
+				List<Espacios> est = q.list();
+
+				for (int y = 0; y < est.size(); y++) {
+
+					espacio = est.get(y);
+					espacios.add(espacio);
+				}
+				ubicaciones.add(ubicacion);
+			}
+		}
+
+		session.close();
+		return espacios;
+	}
+
+	public ArrayList<Ubicaciones> obtenerUbicaciones() {
+		Ubicaciones ubicacion = null;
+		ArrayList<Ubicaciones> ubicaciones = new ArrayList<Ubicaciones>();
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+
+		String hql = " from Ubicaciones";
+		Query q = session.createQuery(hql);
+		List<Ubicaciones> ubi = q.list();
+		for (int x = 0; x < ubi.size(); x++) {
+
+			ubicacion = ubi.get(x);
+			ubicaciones.add(ubicacion);
+		}
+
+		session.close();
+		return ubicaciones;
+	}
+
+	public ArrayList<Estaciones> obtenerEstaciones(Integer codProv, Integer codMuni) {
+		Estaciones estacion = null;
+		ArrayList<Estaciones> estaciones = new ArrayList<Estaciones>();
+		SessionFactory sesion = HibernateUtil.getSessionFactory();
+		Session session = sesion.openSession();
+		String hql = "";
+		if (codProv == null && codMuni == null) {
+			hql = " from Estaciones";
+		}
+
+		else if (codMuni == null && codProv != null) {
+			hql = " from Estaciones where municipios.provincias.codProv = " + codProv;
+		}
+
+		Query q = session.createQuery(hql);
+		List<Estaciones> esta = q.list();
+		for (int x = 0; x < esta.size(); x++) {
+
+			estacion = esta.get(x);
+			estaciones.add(estacion);
+		}
+		session.close();
+		return estaciones;
+
 	}
 
 	public Municipios obtenerMunicipio(int codMuni, int codProv) {
@@ -255,19 +349,39 @@ public class BaseDatos {
 		ArrayList<Municipios> municipios = new ArrayList<Municipios>();
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
 		Session session = sesion.openSession();
+		String hql = "";
+		if (codigosMuni == null && codigosProv == null) {
+			hql = "from Municipios";
+		}
 
-		for (int i = 0; i < codigosMuni.size(); i++) {
-			String hql = " from Municipios where CodProv = " + codigosProv.get(i) + " and CodMuni = "
-					+ codigosMuni.get(i) + "";
-			Query q = session.createQuery(hql);
-			List<Municipios> muni = q.list();
+		else if (codigosMuni == null && codigosProv != null) {
+			hql = "from Municipios where provincia.codProv = " + (Integer) codigosProv.get(0);
+		}
 
-			for (int x = 0; x < muni.size(); x++) {
+		else {
 
-				municipio = muni.get(x);
-				municipios.add(municipio);
+			for (int i = 0; i < codigosMuni.size(); i++) {
+				hql = " from Municipios where CodProv = " + codigosProv.get(i) + " and CodMuni = " + codigosMuni.get(i)
+						+ "";
+				Query q = session.createQuery(hql);
+				List<Municipios> muni = q.list();
+
+				for (int x = 0; x < muni.size(); x++) {
+
+					municipio = muni.get(x);
+					municipios.add(municipio);
+				}
+
 			}
+		}
 
+		Query q = session.createQuery(hql);
+		List<Municipios> muni = q.list();
+
+		for (int x = 0; x < muni.size(); x++) {
+
+			municipio = muni.get(x);
+			municipios.add(municipio);
 		}
 
 		session.close();
