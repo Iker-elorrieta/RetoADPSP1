@@ -162,9 +162,7 @@ public class VentanaCliente extends JFrame implements ActionListener {
 							ArrayList<Municipios> municipiosSeleccionados = bd.obtenerMunicipios(null, codProv);
 
 							for (Municipios municipio : municipiosSeleccionados) {
-
 								comboBoxMunicipios.addItem(municipio.getNombre());
-
 							}
 							mostrarMunicipios(municipiosSeleccionados);
 						}

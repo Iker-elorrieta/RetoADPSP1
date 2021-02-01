@@ -265,7 +265,7 @@ public class LecturaDatos {
 
 	public static String peticionHttpGetEstaciones(String urlParaVisitar) throws Exception {
 
-		int codEstacion = 0;
+		
 		BaseDatos bd = new BaseDatos();
 		Estaciones estacion = new Estaciones();
 
@@ -287,10 +287,9 @@ public class LecturaDatos {
 
 			} else if (linea.contains("Name")) {
 				estacion = new Estaciones();
-				codEstacion++;
+			
 				linea = linea.split(" \"")[2];
-				linea = linea.split("\"")[0];
-				estacion.setCodEst(codEstacion);
+				linea = linea.split("\"")[0];				
 				estacion.setNombre(linea);
 
 			} else if (linea.contains("Town")) {
@@ -298,9 +297,13 @@ public class LecturaDatos {
 				linea = linea.split("\"")[0];
 
 				for (Municipios municipio : listaMunicipios) {
-					if (municipio.getNombre().equals(linea)) {
+					
+					if (municipio.getNombre().contains(linea.split(" ")[0])) {
 						estacion.setMunicipios(municipio);
 
+					}
+					else {
+						continue;
 					}
 				}
 
@@ -321,7 +324,7 @@ public class LecturaDatos {
 				estacion.setLongitud(linea);
 				listaEstaciones.add(estacion);
 			}
-
+			
 			resultado.append(linea + "\n");
 		}
 		bd.insertEstaciones(listaEstaciones);

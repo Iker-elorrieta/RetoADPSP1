@@ -52,6 +52,7 @@ public class BaseDatos {
 			Session session = sesion.openSession();
 			Transaction tx = session.beginTransaction();
 			for (Estaciones estacion : estaciones) {
+				
 				session.save(estacion);
 			}
 

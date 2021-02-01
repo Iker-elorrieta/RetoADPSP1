@@ -1,7 +1,7 @@
 -- phpMyAdmin SQL Dump
 -- version 5.0.2
 -- https://www.phpmyadmin.net/
---
+
 -- Servidor: 127.0.0.1
 -- Tiempo de generación: 01-02-2021 a las 17:34:21
 -- Versión del servidor: 10.4.14-MariaDB
@@ -285,19 +285,19 @@ ALTER TABLE `datos`
 -- AUTO_INCREMENT de la tabla `espacios`
 --
 ALTER TABLE `espacios`
-  MODIFY `CodEspacio` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
+  MODIFY `CodEspacio` int(6) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `estaciones`
 --
 ALTER TABLE `estaciones`
-  MODIFY `CodEst` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
+  MODIFY `CodEst` int(6) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `municipios`
 --
 ALTER TABLE `municipios`
-  MODIFY `CodMuniAuto` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=255;
+  MODIFY `CodMuniAuto` int(6) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
