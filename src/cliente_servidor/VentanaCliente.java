@@ -7,7 +7,12 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.mapping.List;
+
 import dao.BaseDatos;
+import dao.BaseDatos.HibernateUtil;
 import json.LecturaDatos;
 import modelo.Espacios;
 import modelo.Estaciones;
@@ -15,6 +20,8 @@ import modelo.Municipios;
 import modelo.Provincias;
 import modelo.Ubicaciones;
 import modelo.Usuarios;
+
+import java.awt.Component;
 import java.awt.Label;
 
 public class VentanaCliente extends JFrame implements ActionListener {
@@ -42,13 +49,14 @@ public class VentanaCliente extends JFrame implements ActionListener {
 	private Ubicaciones ubicacionesSeleccionadas;
 	BaseDatos bd = new BaseDatos();
 	private ArrayList<Provincias> listaProvincias = bd.obtenerProvincias();
-	private ArrayList<Municipios> listaMunicipios = bd.obtenerMunicipios(null, null);
-	private ArrayList<Espacios> listaEspacios;
-	private ArrayList<Ubicaciones> listaUbicaciones;
+	private java.util.List<Municipios> listaMunicipios = bd.obtenerMunicipios(null, null);
+	private java.util.List<Espacios> listaEspacios = bd.obtenerEspacios(null, null);
+	private ArrayList<Ubicaciones> listaUbicaciones = bd.obtenerUbicaciones();
 	private boolean municipiosPulsado = false;
 	private boolean espaciosPulsado = false;
 
 	// constructor
+
 	public VentanaCliente(Socket s, Usuarios usuario) throws IOException {
 		super(" BIENVENIDO " + usuario.getNombre());
 
@@ -87,8 +95,6 @@ public class VentanaCliente extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				municipiosPulsado = true;
 				espaciosPulsado = false;
-
-				listaMunicipios = LecturaDatos.listaMunicipios;
 				mostrarMunicipios(listaMunicipios);
 			}
 		});
@@ -101,7 +107,6 @@ public class VentanaCliente extends JFrame implements ActionListener {
 // PULSAMOS EN BOTON ESPACIOS NATURALES
 			public void actionPerformed(ActionEvent arg0) {
 
-				listaEspacios = LecturaDatos.listaEspacios;
 				espaciosPulsado = true;
 				municipiosPulsado = false;
 				comboBoxMunicipios.setVisible(true);
@@ -143,39 +148,34 @@ public class VentanaCliente extends JFrame implements ActionListener {
 		for (Provincias provincia : listaProvincias) {
 			comboBoxProvincias.addItem(provincia.getNombre());
 		}
+		comboBoxProvincias.setVisible(true);
 
 //SELECCIONAMOS ALGO EN EL COMBOBOX PROVINCIAS
+
 		comboBoxProvincias.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				comboBoxMunicipios.removeAllItems();
 
+				
 				for (Provincias provincia : listaProvincias) {
 					if (provincia.getNombre()
 							.equals(comboBoxProvincias.getItemAt(comboBoxProvincias.getSelectedIndex()))) {
 						provinciaSeleccionada = provincia;
-
-						if (municipiosPulsado) {
-
-							ArrayList<Integer> codProv = new ArrayList<>();
-							codProv.add(provinciaSeleccionada.getCodProv());
-							ArrayList<Municipios> municipiosSeleccionados = bd.obtenerMunicipios(null, codProv);
-
-							for (Municipios municipio : municipiosSeleccionados) {
-								comboBoxMunicipios.addItem(municipio.getNombre());
-							}
-							mostrarMunicipios(municipiosSeleccionados);
-						}
-
-						else if (espaciosPulsado) {						
-						
-							
-							
-
-						}
-
-						comboBoxMunicipios.setVisible(true);
 					}
+				}
+				ArrayList<Integer> codProv = new ArrayList<>();
+				codProv.add(provinciaSeleccionada.getCodProv());
+				java.util.List<Municipios> municipiosProvincia = new ArrayList<>();
+				municipiosProvincia = bd.obtenerMunicipios(null, codProv);
+				if (municipiosPulsado) {
+					mostrarMunicipios(municipiosProvincia);
+				} else if (espaciosPulsado) {
+					
+					java.util.List<Espacios> espaciosProvincia = bd.obtenerEspacios(null,
+							provinciaSeleccionada.getCodProv());
+					mostrarEspacios(espaciosProvincia);
+					
+					comboBoxMunicipios.setVisible(true);
 				}
 			}
 		});
@@ -187,16 +187,14 @@ public class VentanaCliente extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 
 				ArrayList<Espacios> espaciosSeleccionados = new ArrayList<>();
-				listaUbicaciones = LecturaDatos.listaUbicaciones;
-				listaEspacios = LecturaDatos.listaEspacios;
+
 				ArrayList<Municipios> municipiosSeleccionados = new ArrayList<>();
-				for (Municipios municipio : LecturaDatos.listaMunicipios) {
+				for (Municipios municipio : listaMunicipios) {
 
 					if (municipio.getProvincias().getCodProv() == provinciaSeleccionada.getCodProv()) {
 
 						for (Ubicaciones ubicacion : listaUbicaciones) {
-							if (ubicacion.getMunicipios().getCodMuni() == municipio.getCodMuni()) {
-								// ubicacionesSeleccionadas.add(ubicacion);
+							if (ubicacion.getMunicipios().getCodMuni() == municipio.getCodMuni()) {								
 								for (Espacios espacio : listaEspacios) {
 									if (espacio.getCodEspacio() == ubicacion.getId().getCodEspacio()) {
 										espaciosSeleccionados.add(espacio);
@@ -217,24 +215,31 @@ public class VentanaCliente extends JFrame implements ActionListener {
 
 	}// fin constructor
 
-	public boolean mostrarMunicipios(ArrayList<Municipios> municipios) {
-		textarea1.setText("");
-		for (Municipios municipio : municipios) {
-			String texto = municipio.getNombre() + " | " + municipio.getDescripcion()
-					+ municipio.getProvincias().getNombre();
+	public void comboBoxMunicipios(java.util.List<Municipios> municipios) {
+		comboBoxMunicipios.removeAllItems();
+		
 
-			cliente.enviarMensaje(texto + "\n");
+		for (Municipios municipio : municipios) {
+			comboBoxMunicipios.addItem(municipio.getNombre());
+		}
+
+	}
+
+	public boolean mostrarMunicipios(java.util.List<Municipios> municipiosProvincia) {
+		textarea1.setText("");
+		for (Municipios municipio : municipiosProvincia) {
+
+			textarea1.append(municipio.getNombre() + "\n");
 
 		}
 		return true;
 	}
 
-	public boolean mostrarEspacios(ArrayList<Espacios> espacios) {
+	public boolean mostrarEspacios(java.util.List<Espacios> espaciosProvincia) {
 		textarea1.setText("");
-		for (Espacios espacio : espacios) {
-			String texto = espacio.getNombre() + " | " + espacio.getDescripcion();
+		for (Espacios espacio : espaciosProvincia) {
 
-			cliente.enviarMensaje(texto + "\n");
+			textarea1.append(espacio.getNombre() + "\n");
 
 		}
 		return true;

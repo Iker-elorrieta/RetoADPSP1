@@ -9,6 +9,8 @@ import java.util.Date;
 
 import javax.print.attribute.DateTimeSyntax;
 
+import org.hibernate.mapping.List;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import xml.EscribirXml;
 
 public class LecturaDatos {
 	public static ArrayList<Estaciones> listaEstaciones = new ArrayList<>();
-	public static ArrayList<Municipios> listaMunicipios = new ArrayList<>();
+	public static java.util.List<Municipios> listaMunicipios = new ArrayList<Municipios>();
 	public static ArrayList<Provincias> listProvincias = new ArrayList<>();
 	public static ArrayList<Espacios> listaEspacios = new ArrayList<>();
 	public static ArrayList<Ubicaciones> listaUbicaciones = new ArrayList<>();
@@ -152,9 +154,9 @@ public class LecturaDatos {
 		bd.insertMunicipios(listaMunicipios);
 		listaMunicipios.clear();
 
-//		EscribirXml ex = new EscribirXml();
-//		ex.generarXmlMunicipios(listaMunicipios);
-//		ex.generarXmlProvincias(listProvincias);
+		EscribirXml ex = new EscribirXml();
+		ex.generarXmlMunicipios(listaMunicipios);
+		ex.generarXmlProvincias(listProvincias);
 
 		return resultado.toString();
 	}
@@ -245,7 +247,7 @@ public class LecturaDatos {
 						aux = codigo;
 					}
 				}
-				ArrayList<Municipios> municipios = bd.obtenerMunicipios(codigosMuniFiltrado, codigosProvFiltrado);
+				java.util.List<Municipios> municipios = bd.obtenerMunicipios(codigosMuniFiltrado, codigosProvFiltrado);
 				for (Municipios municipio : municipios) {
 					UbicacionesId uId = new UbicacionesId(codEspacio, municipio.getCodMuniAuto());
 					Ubicaciones ubicacion = new Ubicaciones(uId, espacio, municipio);
@@ -255,9 +257,10 @@ public class LecturaDatos {
 
 			resultado.append(linea + "\n");
 		}
-//		EscribirXml ex = new EscribirXml();
-//		ex.generarXmlEspacios(listaEspacios);
+		EscribirXml ex = new EscribirXml();
+		ex.generarXmlEspacios(listaEspacios);
 		bd.insertEspacios(listaEspacios);
+		ex.generarXmlUbicaciones(listaUbicaciones);
 		bd.insertUbicaciones(listaUbicaciones);
 		rd.close();
 		return resultado.toString();
@@ -265,7 +268,6 @@ public class LecturaDatos {
 
 	public static String peticionHttpGetEstaciones(String urlParaVisitar) throws Exception {
 
-		
 		BaseDatos bd = new BaseDatos();
 		Estaciones estacion = new Estaciones();
 
@@ -287,9 +289,9 @@ public class LecturaDatos {
 
 			} else if (linea.contains("Name")) {
 				estacion = new Estaciones();
-			
+
 				linea = linea.split(" \"")[2];
-				linea = linea.split("\"")[0];				
+				linea = linea.split("\"")[0];
 				estacion.setNombre(linea);
 
 			} else if (linea.contains("Town")) {
@@ -297,12 +299,11 @@ public class LecturaDatos {
 				linea = linea.split("\"")[0];
 
 				for (Municipios municipio : listaMunicipios) {
-					
+
 					if (municipio.getNombre().contains(linea.split(" ")[0])) {
 						estacion.setMunicipios(municipio);
 
-					}
-					else {
+					} else {
 						continue;
 					}
 				}
@@ -324,12 +325,12 @@ public class LecturaDatos {
 				estacion.setLongitud(linea);
 				listaEstaciones.add(estacion);
 			}
-			
+
 			resultado.append(linea + "\n");
 		}
 		bd.insertEstaciones(listaEstaciones);
-//		EscribirXml ex = new EscribirXml();
-//		ex.generarXmlEstaciones(listaEstaciones);
+		EscribirXml ex = new EscribirXml();
+		ex.generarXmlEstaciones(listaEstaciones);
 		rd.close();
 		return resultado.toString();
 	}
@@ -477,8 +478,8 @@ public class LecturaDatos {
 		}
 
 		bd.insertDatos(listaDatos);
-//		EscribirXml xml = new EscribirXml();
-//		xml.generarXmlDatos(listaDatos);
+		EscribirXml xml = new EscribirXml();
+		xml.generarXmlDatos(listaDatos);
 		rd.close();
 
 		return resultado.toString();
