@@ -1,5 +1,5 @@
 package modelo;
-// Generated 13 ene. 2021 20:28:42 by Hibernate Tools 5.4.21.Final
+// Generated 1 feb. 2021 18:32:53 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,19 +9,23 @@ import java.util.Set;
  */
 public class Estaciones implements java.io.Serializable {
 
-	private int codEst;
+	private Integer codEst;
 	private Municipios municipios;
 	private String nombre;
 	private String direccion;
-	private Double latitud;
-	private Double longitud;
+	private String latitud;
+	private String longitud;
 	private Set datoses = new HashSet(0);
 
-	
+	public Estaciones() {
+	}
 
-	public Estaciones(int codEst, Municipios municipios, String nombre, String direccion, Double latitud,
-			Double longitud, Set datoses) {
-		this.codEst = codEst;
+	public Estaciones(Municipios municipios) {
+		this.municipios = municipios;
+	}
+
+	public Estaciones(Municipios municipios, String nombre, String direccion, String latitud, String longitud,
+			Set datoses) {
 		this.municipios = municipios;
 		this.nombre = nombre;
 		this.direccion = direccion;
@@ -30,11 +34,11 @@ public class Estaciones implements java.io.Serializable {
 		this.datoses = datoses;
 	}
 
-	public int getCodEst() {
+	public Integer getCodEst() {
 		return this.codEst;
 	}
 
-	public void setCodEst(int codEst) {
+	public void setCodEst(Integer codEst) {
 		this.codEst = codEst;
 	}
 
@@ -62,19 +66,19 @@ public class Estaciones implements java.io.Serializable {
 		this.direccion = direccion;
 	}
 
-	public Double getLatitud() {
+	public String getLatitud() {
 		return this.latitud;
 	}
 
-	public void setLatitud(Double latitud) {
+	public void setLatitud(String latitud) {
 		this.latitud = latitud;
 	}
 
-	public Double getLongitud() {
+	public String getLongitud() {
 		return this.longitud;
 	}
 
-	public void setLongitud(Double longitud) {
+	public void setLongitud(String longitud) {
 		this.longitud = longitud;
 	}
 

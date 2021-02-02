@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 1 feb. 2021 18:32:53 by Hibernate Tools 5.4.21.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="retofinal" dynamic-insert="false" dynamic-update="false" mutable="true" name="modelo.Favmun" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="favmun">
+        <composite-id class="modelo.FavmunId" mapped="false" name="id" unsaved-value="undefined">
+            <key-property name="codUsu" type="int">
+                <column name="CodUsu"/>
+            </key-property>
+            <key-property name="codMuni" type="int">
+                <column name="CodMuni"/>
+            </key-property>
+        </composite-id>
+        <many-to-one class="modelo.Municipios" embed-xml="true" fetch="select" insert="false" name="municipios" not-found="exception" optimistic-lock="true" unique="false" update="false">
+            <column name="CodMuni" not-null="true"/>
+        </many-to-one>
+        <many-to-one class="modelo.Usuarios" embed-xml="true" fetch="select" insert="false" name="usuarios" not-found="exception" optimistic-lock="true" unique="false" update="false">
+            <column name="CodUsu" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

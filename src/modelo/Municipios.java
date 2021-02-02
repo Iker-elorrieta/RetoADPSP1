@@ -1,5 +1,5 @@
 package modelo;
-// Generated 13 ene. 2021 20:28:42 by Hibernate Tools 5.4.21.Final
+// Generated 1 feb. 2021 18:32:53 by Hibernate Tools 5.4.21.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,29 +9,47 @@ import java.util.Set;
  */
 public class Municipios implements java.io.Serializable {
 
-	private int codMuni;
+	private Integer codMuniAuto;
 	private Provincias provincias;
+	private int codMuni;
 	private String nombre;
 	private String descripcion;
+	private String latitud;
+	private String longitud;
 	private Set ubicacioneses = new HashSet(0);
+	private Set fotomuns = new HashSet(0);
+	private Set favmuns = new HashSet(0);
 	private Set estacioneses = new HashSet(0);
 
-	
+	public Municipios() {
+	}
 
-	public Municipios(int codMuni, Provincias provincias, String nombre) {
-		this.codMuni = codMuni;
+	public Municipios(Provincias provincias, int codMuni, String nombre) {
 		this.provincias = provincias;
+		this.codMuni = codMuni;
 		this.nombre = nombre;
 	}
 
-	
-
-	public int getCodMuni() {
-		return this.codMuni;
+	public Municipios(Provincias provincias, int codMuni, String nombre, String descripcion, String latitud,
+			String longitud, Set ubicacioneses, Set fotomuns, Set favmuns, Set estacioneses) {
+		this.provincias = provincias;
+		this.codMuni = codMuni;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.latitud = latitud;
+		this.longitud = longitud;
+		this.ubicacioneses = ubicacioneses;
+		this.fotomuns = fotomuns;
+		this.favmuns = favmuns;
+		this.estacioneses = estacioneses;
 	}
 
-	public void setCodMuni(int codMuni) {
-		this.codMuni = codMuni;
+	public Integer getCodMuniAuto() {
+		return this.codMuniAuto;
+	}
+
+	public void setCodMuniAuto(Integer codMuniAuto) {
+		this.codMuniAuto = codMuniAuto;
 	}
 
 	public Provincias getProvincias() {
@@ -40,6 +58,14 @@ public class Municipios implements java.io.Serializable {
 
 	public void setProvincias(Provincias provincias) {
 		this.provincias = provincias;
+	}
+
+	public int getCodMuni() {
+		return this.codMuni;
+	}
+
+	public void setCodMuni(int codMuni) {
+		this.codMuni = codMuni;
 	}
 
 	public String getNombre() {
@@ -58,12 +84,44 @@ public class Municipios implements java.io.Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public String getLatitud() {
+		return this.latitud;
+	}
+
+	public void setLatitud(String latitud) {
+		this.latitud = latitud;
+	}
+
+	public String getLongitud() {
+		return this.longitud;
+	}
+
+	public void setLongitud(String longitud) {
+		this.longitud = longitud;
+	}
+
 	public Set getUbicacioneses() {
 		return this.ubicacioneses;
 	}
 
 	public void setUbicacioneses(Set ubicacioneses) {
 		this.ubicacioneses = ubicacioneses;
+	}
+
+	public Set getFotomuns() {
+		return this.fotomuns;
+	}
+
+	public void setFotomuns(Set fotomuns) {
+		this.fotomuns = fotomuns;
+	}
+
+	public Set getFavmuns() {
+		return this.favmuns;
+	}
+
+	public void setFavmuns(Set favmuns) {
+		this.favmuns = favmuns;
 	}
 
 	public Set getEstacioneses() {
